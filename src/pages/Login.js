@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import "../styles.css";
 import {FaGoogle,FaEye,FaEyeSlash } from "react-icons/fa";
-import { NavLink,useNavigate } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 const eye = <FaEye/>
 const eyeSlash = <FaEyeSlash/>
 
