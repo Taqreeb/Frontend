@@ -1,18 +1,20 @@
 import "./App.css";
 import React from 'react';
-import {Routes,Route,Navbar,PageNotFound,Home,About,Contact,Signup,Login} from './imports'
- 
+import {Routes,Route,Navbar,PageNotFound,Home,About,Contact,SignupUser,Login, SignupVendor} from './imports'
+import 'bootstrap/dist/css/bootstrap.css'
+import "@fontsource/public-sans"; 
 function App() {
   return (
     <>
-      <Navbar />
+      <Navbar title="Taqreeb"/>
       <Routes>
-        <Route path="*" element={<PageNotFound />} />
+        <Route exact path="*" element={<PageNotFound />} />
         <Route exact path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+        <Route exact path="/about" element={<About />} />
+        <Route exact path="/contact" element={<Contact />} />
+        <Route exact path="/signupvendor" element={<SignupVendor />} />
+        <Route exact path="/signupuser" element={<SignupUser />} />
+        <Route exact path="/login" element={<Login />} />
       </Routes>
     </>
   );

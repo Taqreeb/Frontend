@@ -1,50 +1,112 @@
-import React from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
-import { NavLink } from '../imports'
+import React from "react";
+import { NavLink } from "../imports";
+import PropTypes from "prop-types";
 
-const Navbar = () => {
+const Navbar = (props) => {
   return (
     <>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <div className="container-fluid">
-    <NavLink className="navbar-brand" to="/">Taqreeb</NavLink>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <NavLink className="nav-link active" aria-current="page" to="/">Home</NavLink>
-        </li>
-        <li className="nav-item"> 
-          <NavLink className="nav-link active" to="/about">About Us</NavLink>
-        </li>
-        <li className="nav-item dropdown">
-          <NavLink className="nav-link dropdown-toggle" to="/event" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Events
+      <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-black">
+        <div className="container-fluid">
+          <NavLink
+            className="navbar-brand text-light font fontweight-700"
+            to="/"
+          >
+            {props.title}
           </NavLink>
-          <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><NavLink className="dropdown-item" to="/signup">Action</NavLink></li>
-            <li><NavLink className="dropdown-item" to="/signup">Another action</NavLink></li>
-            <li><hr className="dropdown-divider"/></li>
-            <li><NavLink className="dropdown-item" to="/signup">Something else here</NavLink></li>
-          </ul>
-        </li>
-        <li className="nav-item">
-          <NavLink className="nav-link active" to="/login" >Login</NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink className="nav-link active" to="/signup" >Signup</NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink className="nav-link active" to="/contact" >Contact Us</NavLink>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link active text-light font fontweight-400"
+                  aria-current="page"
+                  to="/"
+                >
+                  Home
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link active text-light font fontweight-400"
+                  to="/about"
+                >
+                  About Us
+                </NavLink>
+              </li>
+              <div
+                className="collapse navbar-collapse"
+                id="navbarNavDarkDropdown"
+              >
+                <ul className="navbar-nav">
+                  <li className="nav-item dropdown">
+                    <NavLink
+                      className="nav-link dropdown-toggle text-light font fontweight-400"
+                      to=""
+                      id="navbarDarkDropdownMenuLink"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Signup
+                    </NavLink>
+                    <ul
+                      className="dropdown-menu dropdown-menu-dark"
+                      aria-labelledby="navbarDarkDropdownMenuLink"
+                    >
+                      <li>
+                        <NavLink
+                          className="dropdown-item font fontweight-400"
+                          to="/signupuser"
+                        >
+                          User Signup
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="dropdown-item font fontweight-400"
+                          to="/signupvendor"
+                        >
+                          Vendor Signup
+                        </NavLink>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link active text-light font fontweight-400"
+                  to="/login"
+                >
+                  Login
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink
+                  className="nav-link active text-light font fontweight-400"
+                  to="/contact"
+                >
+                  Contact Us
+                </NavLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </>
-  )
-}
-
-export default Navbar
+  );
+};
+Navbar.propTypes = {
+  title: PropTypes.string.isRequired,
+};
+export default Navbar;
