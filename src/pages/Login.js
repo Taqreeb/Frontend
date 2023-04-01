@@ -107,8 +107,8 @@ const Login = () => {
         className="mx-auto card rounded-4 mt-4 px-5 py-4"
         style={{width:"40vw"}}
       >
-        <h4 className="text-start font fontweight-700">Welcome</h4>
-        <p>Login with email</p>
+        <h4 className="text-start font fontweight-700">Login</h4>
+        <p>Welcome to Login</p>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <input
@@ -204,15 +204,11 @@ const Login = () => {
           </button>
         </form>
         <p className="float-end mt-2 mx-auto text-dark font fontweight-500">New to Taqreeb? <NavLink
-            to="/signupuser"
+            to="/signup"
             className="text-decoration-none text opacity-75 font fontweight-700">
             Create an account
           </NavLink> </p>
-          <p className="float-end mx-auto text-dark font fontweight-500">Have a wedding business? <NavLink
-            to="/signupvendor"
-            className="text-decoration-none text opacity-75 font fontweight-700">
-            Join as a vendor
-        </NavLink> </p>
+         
       
       </div>
     </div>

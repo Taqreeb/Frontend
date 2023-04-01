@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "../styles.css";
-import {FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 const eye = <FaEye />;
 const eyeSlash = <FaEyeSlash />;
 
-const SignupUser = () => {
+const Signup = () => {
   const [passwordShown, setPasswordShown] = useState(false);
   const [confirmpasswordShown, setConfirmPasswordShown] = useState(false);
   const [eyeShown1, seteyeShown1] = useState(false);
@@ -49,32 +49,31 @@ const SignupUser = () => {
   return (
     <div className="background-login-signup d-flex align-items-center">
       <div
-        className="mx-auto card rounded-4 mt-5 px-5 py-4"
-        style={{width:"40vw"}}
-        
-      >    
+        className="mx-auto card rounded-4 mb-5 px-5 py-4"
+        style={{ width: "40vw" }}
+      >
         <h4 className="text-start font fontweight-700">Signup</h4>
-        <p>You are Signing up as a user</p>
+        <p>Welcome to Signup</p>
         <form>
           <div className="row">
-          <div className="col">
-            <input
-              placeholder="First Name"
-              type="text"
-              className="form-control shadow-none text-black border-top-0 border-end-0 border-start-0 border-dark rounded-0 font fontweight-400"
-              id="FirstName"
-            />
+            <div className="col">
+              <input
+                placeholder="First Name"
+                type="text"
+                className="form-control shadow-none text-black border-top-0 border-end-0 border-start-0 border-dark rounded-0 font fontweight-400"
+                id="FirstName"
+              />
             </div>
             <div className="col mb-3">
-            <input
-              placeholder="Last Name"
-              type="text"
-              className="form-control shadow-none text-black border-top-0 border-end-0 border-start-0 border-dark rounded-0 font fontweight-400"
-              id="LastName"
-            />
+              <input
+                placeholder="Last Name"
+                type="text"
+                className="form-control shadow-none text-black border-top-0 border-end-0 border-start-0 border-dark rounded-0 font fontweight-400"
+                id="LastName"
+              />
+            </div>
           </div>
-        </div>
-          
+
           <div className="mb-3">
             <input
               placeholder="Email"
@@ -134,6 +133,33 @@ const SignupUser = () => {
               id="MobileNo"
             />
           </div>
+          <div className="d-flex justify-content-center">
+          You are Signing up as &nbsp;
+          <div className="form-check form-check-inline">   
+            <input
+              className="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio1"
+              value="option1"
+            />
+            <label className="form-check-label" htmlFor="inlineRadio1">
+              User
+            </label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input
+              className="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio2"
+              value="option2"
+            />
+            <label className="form-check-label" htmlFor="inlineRadio2">
+              Vendor
+            </label>
+          </div>
+          </div>
           <button
             type="submit"
             className="btn btn-primary rounded-4 bg-black border-0 my-3 w-100 font fontweight-600"
@@ -162,23 +188,17 @@ const SignupUser = () => {
           </button>
         </form>
         <p className="float-end mx-auto mt-2 text-dark font fontweight-500">
-            Already have an account?{" "}
-            <NavLink
-              to="/login"
-              className="text-decoration-none text opacity-75 font fontweight-700"
-            >
-              Login
-            </NavLink>
-          </p>
-          <p className="float-end mx-auto text-dark font fontweight-500">Have a wedding business? <NavLink
-            to="/signupvendor"
-            className="text-decoration-none text opacity-75 font fontweight-700">
-            Join as a vendor
-        </NavLink> </p>
+          Already have an account?{" "}
+          <NavLink
+            to="/login"
+            className="text-decoration-none text opacity-75 font fontweight-700"
+          >
+            Login
+          </NavLink>
+        </p>        
       </div>
     </div>
-
   );
 };
 
-export default SignupUser;
+export default Signup;

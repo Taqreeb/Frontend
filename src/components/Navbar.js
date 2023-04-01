@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 const Navbar = (props) => {
   return (
     <>
-      <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-black">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-black">
         <div className="container-fluid">
           <NavLink
             className="navbar-brand text-light font fontweight-700"
@@ -26,71 +26,80 @@ const Navbar = (props) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav">
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active text-light font fontweight-400"
-                  aria-current="page"
-                  to="/"
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active text-light font fontweight-400"
-                  to="/about"
-                >
-                  About Us
-                </NavLink>
-              </li>
               <div
                 className="collapse navbar-collapse"
                 id="navbarNavDarkDropdown"
               >
                 <ul className="navbar-nav">
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link active text-light font fontweight-400"
+                      to="/"
+                    >
+                      Home
+                    </NavLink>
+                  </li>
                   <li className="nav-item dropdown">
+                    
                     <NavLink
                       className="nav-link dropdown-toggle text-light font fontweight-400"
-                      to=""
                       id="navbarDarkDropdownMenuLink"
                       role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      Signup
-                    </NavLink>
+                      Vendors
+                     
+                    </NavLink> 
                     <ul
                       className="dropdown-menu dropdown-menu-dark"
                       aria-labelledby="navbarDarkDropdownMenuLink"
                     >
+                       <li>
+                        <NavLink
+                          className="dropdown-item font fontweight-400"
+                          to="/venue"
+                        >
+                          Venues
+                        </NavLink>
+                      </li>
+                     
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/signupuser"
+                          to="/vendors/photographer"
                         >
-                          User Signup
+                          Photographers
                         </NavLink>
                       </li>
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/signupvendor"
+                          to="/decorator"
                         >
-                          Vendor Signup
+                          Decorators
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="dropdown-item font fontweight-400"
+                          to="/caterer"
+                        >
+                          Caterers
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          className="dropdown-item font fontweight-400"
+                          to="/music"
+                        >
+                         Music
                         </NavLink>
                       </li>
                     </ul>
                   </li>
                 </ul>
               </div>
-              <li className="nav-item">
-                <NavLink
-                  className="nav-link active text-light font fontweight-400"
-                  to="/login"
-                >
-                  Login
-                </NavLink>
-              </li>
               <li className="nav-item">
                 <NavLink
                   className="nav-link active text-light font fontweight-400"
@@ -101,6 +110,22 @@ const Navbar = (props) => {
               </li>
             </ul>
           </div>
+          <form className="d-flex">
+            <NavLink
+              className="btn btn-primary mx-2 text-light font fontweight-400"
+              role="button"
+              to="/signup"
+            >
+              Signup
+            </NavLink>
+            <NavLink
+              className="btn btn-primary mx-2 text-light font fontweight-400"
+              role="button"
+              to="/login"
+            >
+              Login
+            </NavLink>
+          </form>
         </div>
       </nav>
     </>
