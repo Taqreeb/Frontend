@@ -8,11 +8,11 @@ const StarRating = (props) => {
     return (
       <span key={index}>
         {star >= index + 1 ? (
-          <FaStar className="icon" />
+          <FaStar className="star-icon" />
         ) : star >= number ? (
-          <FaStarHalfAlt className="icon" />
+          <FaStarHalfAlt className="star-icon" />
         ) : (
-          <AiOutlineStar className="icon" />
+          <AiOutlineStar className="star-icon" />
         )}
       </span>
     );

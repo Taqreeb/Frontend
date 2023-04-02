@@ -1,5 +1,4 @@
 import React from "react";
-import ScrollToTop from "../components/ScrollToTop";
 import SlickSlider from "../components/SlickSlider";
 import pic from "../img/carousel-1.png";
 const Home = () => {
@@ -136,7 +135,7 @@ const Home = () => {
       <SlickSlider title="Decorators" cards={photographerCards} />
       <SlickSlider title="Caterers" cards={photographerCards} />
       <SlickSlider title="Music" cards={photographerCards} />
-      <ScrollToTop />
+     
       <div
         className="card text-white"
       >
