@@ -58,7 +58,7 @@ const Navbar = (props) => {
                        <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/venue"
+                          to="/vendor/venue"
                         >
                           Venues
                         </NavLink>
@@ -67,7 +67,7 @@ const Navbar = (props) => {
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/vendors/photographer"
+                          to="/vendor/photographer"
                         >
                           Photographers
                         </NavLink>
@@ -75,7 +75,7 @@ const Navbar = (props) => {
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/decorator"
+                          to="/vendor/decorator"
                         >
                           Decorators
                         </NavLink>
@@ -83,7 +83,7 @@ const Navbar = (props) => {
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/caterer"
+                          to="/vendor/caterer"
                         >
                           Caterers
                         </NavLink>
@@ -91,7 +91,7 @@ const Navbar = (props) => {
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/music"
+                          to="/vendor/music"
                         >
                          Music
                         </NavLink>
@@ -111,19 +111,22 @@ const Navbar = (props) => {
             </ul>
           </div>
           <form className="d-flex">
+            
             <NavLink
-              className="btn btn-primary mx-2 text-light font fontweight-400"
-              role="button"
-              to="/signup"
-            >
-              Signup
-            </NavLink>
-            <NavLink
-              className="btn btn-primary mx-2 text-light font fontweight-400"
+              className="btn btn-light rounded-5 mx-2 text-black font fontweight-400"
+              style={{width:"136px",height:"36px"}}
               role="button"
               to="/login"
             >
               Login
+            </NavLink>
+            <NavLink
+              className="btn btn-light rounded-5 mx-2 text-black font fontweight-400"
+              style={{width:"136px",height:"36px"}}
+              role="button"
+              to="/signup"
+            >
+              Signup
             </NavLink>
           </form>
         </div>

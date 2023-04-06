@@ -3,8 +3,9 @@ import React from 'react';
 import {Routes,Route,Navbar,PageNotFound,Home,Contact,Signup,Login} from './imports'
 import 'bootstrap/dist/css/bootstrap.css'
 import "@fontsource/public-sans"; 
-import Photographer from "./pages/vendors/Photographer";
+import Vendor from "./pages/vendors/Vendor";
 import ScrollToTop from "./components/ScrollToTop";
+import VendorProfile from "./pages/vendors/VendorProfile";
 function App() {
   return (
     <>
@@ -15,7 +16,8 @@ function App() {
         <Route exact path="/contact" element={<Contact />} />
         <Route exact path="/signup" element={<Signup />} />
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/vendors/photographer" element={<Photographer />} />   
+        <Route exact path="/vendor/:vendorType" element={<Vendor/>} />   
+        <Route exact path="/vendor/:vendorType/:vendorName/:vendorId" element={<VendorProfile/>} />
       </Routes>
       <ScrollToTop/>
     </>
