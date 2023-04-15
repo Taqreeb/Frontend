@@ -1,11 +1,14 @@
 import React from "react";
-import SlickSlider from "../components/SlickSlider";
-import pic from "../img/carousel-1.png";
-import { vendors } from "../components/constants";
+import SlickSliderHome from "../components/SlickSliderHome";
+import Footer from "../components/Footer"
+import { vendors } from "../utils/constants";
 const Home = () => {
+  const venueUrl =
+    "https://theceremonio.blob.core.windows.net/theceremonio-container/categories/venue.jpg";
   return (
+    <>
     <div className="background-home-body">
-      <div id="carouselExampleCaptions" className="carousel slide">
+      <div id="carouselExampleCaptions" className="carousel slide" data-bs-ride="carousel">
         <div className="carousel-indicators">
           <button
             type="button"
@@ -31,7 +34,7 @@ const Home = () => {
         <div className="carousel-inner ">
           <div className="carousel-item active">
             <img
-              src={pic}
+              src={venueUrl}
               className="d-block item mx-auto pt-2 rounded-5"
               style={{ width: "90%" }}
               alt="Just enjoy your day and leave the rest to our professional vendors"
@@ -96,21 +99,23 @@ const Home = () => {
           <span className="visually-hidden">Next</span>
         </button>
       </div>
-      <SlickSlider title="Venues" vendors={vendors} vendorType={"venue"} />
-      <SlickSlider
+      <SlickSliderHome title="Venues" vendors={vendors} vendorType={"venue"} />
+      <SlickSliderHome
         title="Photographers"
         vendors={vendors}
         vendorType={"photographer"}
       />
-      <SlickSlider
+      <SlickSliderHome
         title="Decorators"
         vendors={vendors}
         vendorType={"decorator"}
       />
-      <SlickSlider title="Caterers" vendors={vendors} vendorType={"caterer"} />
-      <SlickSlider title="Music" vendors={vendors} vendorType={"music"} />
-      <div className=" background-home-footer"></div>
+      <SlickSliderHome title="Caterers" vendors={vendors} vendorType={"caterer"} />
+      <SlickSliderHome title="Music" vendors={vendors} vendorType={"music"} />
+      
     </div>
+    <Footer/>
+   </>
   );
 };
 

@@ -7,12 +7,18 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import StarRating from "./StarRating";
 
 const mapMarker = <FaMapMarkerAlt />;
-const SlickSlider = (props) => {
+
+const SlickSliderHome = (props) => {
+  const { title, vendors, vendorType } = props;
+  const vendor = vendors.filter((vendor) => vendor.vendor_type === vendorType);
+  const sortedProducts = vendor.sort((a, b) => b.rating - a.rating);
+  const topRatedProducts = sortedProducts.slice(0, 6);
   var settings = {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow:
+      topRatedProducts.length >= 3 ? 3 : topRatedProducts.length === 2 ? 2 : 1,
     slidesToScroll: 1,
     initialSlide: 0,
     responsive: [
@@ -35,17 +41,14 @@ const SlickSlider = (props) => {
       },
     ],
   };
-  const { title, vendors, vendorType } = props;
-  const vendor = vendors.filter((vendor) => vendor.vendorType === vendorType);
-  const sortedProducts = vendor.sort((a, b) => b.rating - a.rating);
-  const topRatedProducts = sortedProducts.slice(0, 6);
+
   return (
     <div className="my-5" style={{ marginLeft: "5rem", marginRight: "5rem" }}>
       {vendor.length !== 0 ? (
         <div>
           <div className="d-flex justify-content-between">
             <h2 className="text-uppercase">{title}</h2>
-            <NavLink to={`/vendor/${vendorType}`}>
+            <NavLink to={`/category/${vendorType}`}>
               <button
                 type="button"
                 className="btn btn-outline-danger rounded-0"
@@ -58,12 +61,12 @@ const SlickSlider = (props) => {
       ) : (
         <div />
       )}
-      <Slider {...settings} >
+      <Slider {...settings}>
         {topRatedProducts.map((vendor) => (
           <NavLink
             key={vendor.id}
-            state={{ cards: vendor }}
-            to={`vendor/${vendorType}/${vendor.title}/${vendor.id}`}
+            state={{cards: vendor}}
+            to={`/category/${vendorType}/${vendor.business_name}/${vendor.id}`}
           >
             {" "}
             <div
@@ -71,17 +74,17 @@ const SlickSlider = (props) => {
               style={{ width: "98%" }}
             >
               <img
-                src={vendor.imageUrl}
+                src={vendor.display_picture}
                 className="card-img"
-                alt={vendor.title}
+                alt={vendor.business_name}
                 style={{ maxHeight: "250px", minHeight: "250px" }}
               />
               <div className="card-overlay ">
                 <div className="d-flex justify-content-between">
                   <h5 className=" card-title text-uppercase ">
-                    {vendor.title}
+                    {vendor.business_name}
                   </h5>
-                  <p>{vendor.reviews} Reviews</p>
+                  <p>{vendor.no_of_reviews}Reviews</p>
                 </div>
                 <div className="d-flex justify-content-between">
                   <p className=" card-text ">
@@ -98,4 +101,4 @@ const SlickSlider = (props) => {
   );
 };
 
-export default SlickSlider;
+export default SlickSliderHome;

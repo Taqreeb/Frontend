@@ -1,16 +1,78 @@
 import React, { useState, useEffect } from "react";
 import "../styles.css";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 const eye = <FaEye />;
 const eyeSlash = <FaEyeSlash />;
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
   const [confirmpasswordShown, setConfirmPasswordShown] = useState(false);
   const [eyeShown1, seteyeShown1] = useState(false);
   const [eyeShown2, seteyeShown2] = useState(false);
+  const [showModal, setShowModal] = useState(true);
+  const [selectedPopupValue, setSelectedPopupValue] = useState("");
+  const [popupError, setPopupError] = useState("");
 
+  const handleRadioChange = (event) => {
+    setSelectedPopupValue(event.target.value);
+    setPopupError("");
+  };
+  const handleCancel = () => {
+    setShowModal(false);
+    navigate("/");
+  };
+
+  const handleSubmit = () => {
+    if (selectedPopupValue) {
+      setShowModal(false);
+    } else {
+      setPopupError("Please Select a category");
+    }
+  };
+  const MyModal = () => {
+    return (
+      <>
+        <div className="modal-wrapper"></div>
+        <div className="modal-container">
+          <h4>What are You Signing up as?</h4>
+
+          <div className="d-flex justify-content-center my-4">
+            <label className="mx-3">
+              <input
+                className="mx-2"
+                type="radio"
+                value="user"
+                checked={selectedPopupValue === "user"}
+                onChange={handleRadioChange}
+              />
+              User
+            </label>
+            <label>
+              <input
+                className="mx-2"
+                type="radio"
+                value="vendor"
+                checked={selectedPopupValue === "vendor"}
+                onChange={handleRadioChange}
+              />
+              Vendor
+            </label>
+          </div>
+          <p className="text-danger text-center">{popupError}</p>
+          <div className="text-end">
+            <button className="btn btn-dark mx-2" onClick={handleCancel}>
+              Cancel
+            </button>
+            <button className="btn btn-dark" onClick={handleSubmit}>
+              Submit
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  };
   const togglePasswordVisiblity = () => {
     console.log("togglePasswordeventtriggered");
     setPasswordShown(passwordShown ? false : true);
@@ -20,15 +82,7 @@ const Signup = () => {
     setConfirmPasswordShown(confirmpasswordShown ? false : true);
   };
 
-  useEffect(() => {
-    const keyPressHandler = (event) => {};
-    document.addEventListener("keydown", keyPressHandler);
-
-    return () => {
-      document.removeEventListener("keydown", keyPressHandler);
-    };
-  }, []);
-
+  useEffect(() => {}, []);
   const handlePasswordChange = (event) => {
     if (event.target.value.trim().length > 0) {
       seteyeShown1(true);
@@ -52,6 +106,7 @@ const Signup = () => {
         className="mx-auto card rounded-4 mb-5 px-5 py-4"
         style={{ width: "40vw" }}
       >
+        {showModal && <MyModal />}
         <h4 className="text-start font fontweight-700">Signup</h4>
         <p>Welcome to Signup</p>
         <form>
@@ -133,33 +188,7 @@ const Signup = () => {
               id="MobileNo"
             />
           </div>
-          <div className="d-flex justify-content-center">
-          You are Signing up as &nbsp;
-          <div className="form-check form-check-inline">   
-            <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio1"
-              value="option1"
-            />
-            <label className="form-check-label" htmlFor="inlineRadio1">
-              User
-            </label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio2"
-              value="option2"
-            />
-            <label className="form-check-label" htmlFor="inlineRadio2">
-              Vendor
-            </label>
-          </div>
-          </div>
+
           <button
             type="submit"
             className="btn btn-primary rounded-4 bg-black border-0 my-3 w-100 font fontweight-600"
@@ -195,7 +224,7 @@ const Signup = () => {
           >
             Login
           </NavLink>
-        </p>        
+        </p>
       </div>
     </div>
   );

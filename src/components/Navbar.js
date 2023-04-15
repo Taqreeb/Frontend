@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "../imports";
 import PropTypes from "prop-types";
-
+import { useNavigate } from "react-router-dom";
+import { FaUser, FaSignOutAlt } from "react-icons/fa";
 const Navbar = (props) => {
+  const navigate = useNavigate();
+  const logoutIcon = <FaSignOutAlt />;
+  const profileIcon = <FaUser />;
+  const [isLogin, setIsLogin] = useState(true);
+  const handleLogout = () => {
+    setIsLogin(false);
+    navigate("/");
+  };
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-black">
@@ -39,35 +48,52 @@ const Navbar = (props) => {
                       Home
                     </NavLink>
                   </li>
-                  <li className="nav-item dropdown">
-                    
+                  <li className="nav-item">
                     <NavLink
-                      className="nav-link dropdown-toggle text-light font fontweight-400"
-                      id="navbarDarkDropdownMenuLink"
+                      className="nav-link active text-light font fontweight-400"
+                      to="/vendor/addbusiness"
+                    >
+                      AddBusiness
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link active text-light font fontweight-400"
+                      to="/vendor/viewbusiness"
+                    >
+                      ViewBusiness
+                    </NavLink>
+                  </li>
+                  <li className="nav-item dropdown">
+                    <NavLink
+                      className="nav-link dropdown-toggle active"
+                      id="navbarDropdown"
+                      to="/category"
                       role="button"
-                      data-bs-toggle="dropdown"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
                       aria-expanded="false"
                     >
                       Vendors
-                     
-                    </NavLink> 
+                    </NavLink>
+
                     <ul
                       className="dropdown-menu dropdown-menu-dark"
                       aria-labelledby="navbarDarkDropdownMenuLink"
                     >
-                       <li>
+                      <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/vendor/venue"
+                          to="/category/venue"
                         >
                           Venues
                         </NavLink>
                       </li>
-                     
+
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/vendor/photographer"
+                          to="/category/photographer"
                         >
                           Photographers
                         </NavLink>
@@ -75,7 +101,7 @@ const Navbar = (props) => {
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/vendor/decorator"
+                          to="/category/decorator"
                         >
                           Decorators
                         </NavLink>
@@ -83,7 +109,7 @@ const Navbar = (props) => {
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/vendor/caterer"
+                          to="/category/caterer"
                         >
                           Caterers
                         </NavLink>
@@ -91,9 +117,9 @@ const Navbar = (props) => {
                       <li>
                         <NavLink
                           className="dropdown-item font fontweight-400"
-                          to="/vendor/music"
+                          to="/category/music"
                         >
-                         Music
+                          Music
                         </NavLink>
                       </li>
                     </ul>
@@ -105,30 +131,74 @@ const Navbar = (props) => {
                   className="nav-link active text-light font fontweight-400"
                   to="/contact"
                 >
-                  Contact Us
+                  Contact
                 </NavLink>
               </li>
             </ul>
           </div>
-          <form className="d-flex">
-            
-            <NavLink
-              className="btn btn-light rounded-5 mx-2 text-black font fontweight-400"
-              style={{width:"136px",height:"36px"}}
-              role="button"
-              to="/login"
-            >
-              Login
-            </NavLink>
-            <NavLink
-              className="btn btn-light rounded-5 mx-2 text-black font fontweight-400"
-              style={{width:"136px",height:"36px"}}
-              role="button"
-              to="/signup"
-            >
-              Signup
-            </NavLink>
-          </form>
+
+          {!isLogin ? (
+            <div>
+              <NavLink
+                className="btn btn-light rounded-5 mx-2 text-black font fontweight-400"
+                style={{ width: "136px", height: "36px" }}
+                role="button"
+                to="/login"
+              >
+                Login
+              </NavLink>
+              <NavLink
+                className="btn btn-light rounded-5 mx-2 text-black font fontweight-400"
+                style={{ width: "136px", height: "36px" }}
+                role="button"
+                to="/signup"
+              >
+                Signup
+              </NavLink>
+            </div>
+          ) : (
+            <ul className="navbar-nav">
+              <li className="nav-item dropdown">
+                <span
+                  className="nav-link dropdown-toggle"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1639879646636-c49a99c658eb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=410&q=80"
+                    alt="Logo"
+                    className="rounded-circle"
+                    data-toggle="dropdown"
+                    id="navbarDropdown"
+                    width="40"
+                    height="40"
+                  />
+                </span>
+
+                <div
+                  className="dropdown-menu dropdown-menu-dark" id="account"
+                  aria-labelledby="navbarDropdown"
+                >
+                  <NavLink className="dropdown-item" to='/profile'>
+                    <i className="me-2">{profileIcon}</i>
+                    My Profile
+                  </NavLink>
+                  <div className="dropdown-divider"></div>
+                  <button
+                    className="dropdown-item"
+                    type="button"
+                    onClick={handleLogout}
+                  >
+                    <i className="me-2">{logoutIcon}</i>
+                    Logout
+                  </button>
+                </div>
+              </li>
+            </ul>
+          )}
         </div>
       </nav>
     </>

@@ -3,8 +3,8 @@ import { NavLink } from "react-router-dom";
 import StarRating from "./StarRating";
 import { FaMapMarkerAlt } from "react-icons/fa";
 const mapMarker = <FaMapMarkerAlt />;
-const VendorCard = ({ cards, vendorType }) => {
 
+const CategoryCard = ({ cards, vendorType }) => {
   const vendor = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
 
   if (cards.length!==0) {
@@ -16,29 +16,29 @@ const VendorCard = ({ cards, vendorType }) => {
               <div className="col" key={card.id}>
                 <NavLink
                   className="text-decoration-none text-dark"
-                  to={`/vendor/${vendorType}/${card.title}/${card.id}`}
-                  state={{ cards: cards }}
+                  to={`/category/${vendorType}/${card.business_name}/${card.id}`}
+                  state={{ cards: card }}
                 >
                   <div className="card" style={{ width: "20rem" }}>
                     <img
-                      src={card.imageUrl}
+                      src={card.display_picture}
                       className="card-img-top px-3 py-3"
-                      alt="..."
+                      alt={card.name}
                       style={{ height: "250px", borderRadius: "25px" }}
                     />
                     <div className="card-body text-center ">
-                      <h5 className="card-title">{card.title}</h5>
+                      <h5 className="card-title">{card.business_name}</h5>
                       <p>{vendor}</p>
                       <div className="d-inline-flex">
                         <StarRating star={card.rating} />
                         &nbsp;
-                        <p>({card.reviews} reviews)</p>
+                        <p>({card.no_of_reviews} reviews)</p>
                       </div>
                       <p className="font fontweight-400 card-text">
                         <i className="fs-6">{mapMarker}</i> {card.location}
                       </p>
                       <p className="font fontweight-500">
-                        Rs {card.price} per day
+                        Rs {card.price} per event (estimated)
                       </p>
                     </div>
                   </div>
@@ -54,4 +54,4 @@ const VendorCard = ({ cards, vendorType }) => {
   }
 };
 
-export default VendorCard;
+export default CategoryCard;
