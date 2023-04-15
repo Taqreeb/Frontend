@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Set CI environment variable to false
-        run: echo "export CI=false" >> $GITHUB_ENV
+        run: echo 'export CI=false' >> $GITHUB_ENV
       - name: Install dependencies
         run: |
           if [ -e yarn.lock ]; then
