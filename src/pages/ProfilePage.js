@@ -1,88 +1,261 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyImagePickerProfile from "../components/ImagePickers/MyImagePickerProfile";
+import axios from "axios";
+import ChangePasswordModal from "../components/ChangePasswordModal";
 
-const ProfilePage = () => {
-  const [email, setEmail] = useState("example@example.com");
-  const [password, setPassword] = useState("pass");
-  const [name, setName] = useState("John Doe");
-  const [phone, setPhone] = useState("1234567890");
-
-  const [isEditingEmail, setIsEditingEmail] = useState(false);
-  const [isEditingPassword, setIsEditingPassword] = useState(false);
-  const [isEditingName, setIsEditingName] = useState(false);
+const ProfilePage = (props) => {
+  const validPhoneNo = new RegExp("^(03|\\+923)[0-9]{2}[0-9]{7}$");
+  const role = localStorage.getItem("role");
+  const title = role.charAt(0).toUpperCase() + role.slice(1)
+  const authtoken = localStorage.getItem("authtoken");
+  const [email, setEmail] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const [isEditingFirstName, setIsEditingFirstName] = useState(false);
+  const [isEditingLastName, setIsEditingLastName] = useState(false);
   const [isEditingPhone, setIsEditingPhone] = useState(false);
+  const [saveButton, setSaveButton] = useState(false);
 
-  const handleSaveChangesEmail = () => {
-    setIsEditingEmail(false);
-    // Save changes to backend or update state as needed
+  const handleSaveChangesFirstName = async () => {
+    if (firstName) {
+      try {
+        await axios.put(
+          `http://localhost:5000/${role}/updateFirstName`,
+          { FirstName: firstName },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": authtoken,
+            },
+          }
+        );
+        setFirstNameError("");
+        props.showAlert("First Name Changed Successfully", "success");
+        setIsEditingFirstName(false);
+        setSaveButton(true);
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response);
+        } else if (error.request) {
+          console.log("network error");
+        } else {
+          console.log(error);
+        }
+      }
+    } else {
+      setFirstNameError("First Name is required");
+    }
   };
 
-  const handleSaveChangesPassword = () => {
-    setIsEditingPassword(false);
-    // Save changes to backend or update state as needed
+  const handleSaveChangesLastName = async () => {
+    if (lastName) {
+      try {
+        await axios.put(
+          `http://localhost:5000/${role}/updateLastName`,
+          { LastName: lastName },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "auth-token": authtoken,
+            },
+          }
+        );
+        setLastNameError("");
+        props.showAlert("Last Name Changed Successfully", "success");
+        setIsEditingLastName(false);
+        setSaveButton(true);
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response);
+        } else if (error.request) {
+          console.log("network error");
+        } else {
+          console.log(error);
+        }
+      }
+    } else {
+      setLastNameError("Last Name is required");
+    }
   };
 
-  const handleSaveChangesName = () => {
-    setIsEditingName(false);
-    // Save changes to backend or update state as needed
+  const handleSaveChangesPhone = async () => {
+    if (phone) {
+      if (validPhoneNo.test(phone)) {
+        try {
+          await axios.put(
+            `http://localhost:5000/${role}/updatePhone`,
+            { PhoneNo: phone },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "auth-token": authtoken,
+              },
+            }
+          );
+          setPhoneError("");
+
+          props.showAlert("Phone Number Changed Successfully", "success");
+
+          setIsEditingPhone(false);
+          setSaveButton(true);
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response);
+          } else if (error.request) {
+            console.log("network error");
+          } else {
+            console.log(error);
+          }
+        }
+      } else {
+        setPhoneError(
+          "Please enter a valid phone number in the format 03XXXXXXXXX or +923XXXXXXXXX"
+        );
+      }
+    } else {
+      setPhoneError("Phone Number is required");
+    }
   };
 
-  const handleSaveChangesPhone = () => {
-    setIsEditingPhone(false);
-    // Save changes to backend or update state as needed
+  const getProfile = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/${role}/profile`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": authtoken,
+          },
+        }
+      );
+      setFirstName(response.data.FirstName);
+      setLastName(response.data.LastName);
+      setEmail(response.data.Email);
+      setPhone(response.data.PhoneNo);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response);
+      } else if (error.request) {
+        console.log("network error");
+      } else {
+        console.log(error);
+      }
+    }
   };
 
+  useEffect(() => {
+    getProfile();
+  }, [saveButton]);
   return (
     <>
       <div className="background-profile-top">
         <div className="container pt-4">
-          <h1>My Profile</h1>
+          <ChangePasswordModal showAlert={props.showAlert} />
+          <h2>Welcome to your {title} Profile</h2>
+          <p className="ms-5">You can manage your profile here</p>
         </div>
       </div>
       <div className="background-profile pt-5">
         <div>
-          <MyImagePickerProfile />
+          <MyImagePickerProfile
+            role={role}
+            authtoken={authtoken}
+            setSaveButton={setSaveButton}
+            showAlert= {props.showAlert}
+          />
         </div>
         <div
           className="container w-50 text-center"
           style={{ marginTop: "5rem" }}
         >
           <div>
-            {isEditingName ? (
+            {isEditingFirstName ? (
               <div>
                 <div className="container text-start mb-2">
-                  <label htmlFor="name" className="form-label">
-                    Name
+                  <label htmlFor="firstname" className="form-label">
+                    First Name
                   </label>
                 </div>
                 <input
-                  type="tel"
+                  type="text"
                   className="form-control"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  id="firstname"
+                  value={firstName}
+                  onChange={(e) => {setFirstName(e.target.value)
+                  setFirstNameError("")}}
                 />
                 <div className="container mt-2 ms-3 text-end">
                   <button
                     className="btn btn-success "
-                    onClick={handleSaveChangesName}
+                    onClick={handleSaveChangesFirstName}
                   >
                     Save Changes
                   </button>
                 </div>
+                {firstNameError && <span className="text-danger">{firstNameError}</span>}
               </div>
             ) : (
               <div className="d-flex justify-content-between">
                 <div>
-                  <span>Name: </span>
-                  <span>{name}</span>
+                  <span>First Name: </span>
+                  <span>{firstName}</span>
                 </div>
                 <div>
                   <button
                     className="btn btn-primary"
-                    onClick={() => setIsEditingName(true)}
+                    onClick={() => setIsEditingFirstName(true)}
                   >
-                    Change User Name
+                    Change First Name
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="mt-3">
+            {isEditingLastName ? (
+              <div>
+                <div className="container text-start mb-2">
+                  <label htmlFor="lastname" className="form-label">
+                    Last Name
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastname"
+                  value={lastName}
+                  onChange={(e) => {
+                    setLastName(e.target.value)
+                    setLastNameError("")
+                  }}
+                  required
+                />
+                <div className="container mt-2 ms-3 text-end">
+                  <button
+                    className="btn btn-success "
+                    onClick={handleSaveChangesLastName}
+                  >
+                    Save Changes
+                  </button>
+                </div>
+                {lastNameError && <span className="text-danger">{lastNameError}</span>}
+              </div>
+            ) : (
+              <div className="mt-5 d-flex justify-content-between">
+                <div>
+                  <span>Last Name: </span>
+                  <span>{lastName}</span>
+                </div>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => setIsEditingLastName(true)}
+                  >
+                    Change Last Name
                   </button>
                 </div>
               </div>
@@ -97,11 +270,14 @@ const ProfilePage = () => {
                   </label>
                 </div>
                 <input
-                  type="email"
+                  type="tel"
                   className="form-control"
                   id="phone"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    setPhone(e.target.value)
+                    setPhoneError("")
+                  }}
                 />
                 <div className="container mt-2 ms-3 text-end">
                   <button
@@ -111,6 +287,7 @@ const ProfilePage = () => {
                     Save Changes
                   </button>
                 </div>
+                {phoneError && <span className="text-danger">{phoneError}</span>}
               </div>
             ) : (
               <div className="mt-5 d-flex justify-content-between">
@@ -128,89 +305,36 @@ const ProfilePage = () => {
                 </div>
               </div>
             )}
+           
           </div>
-          <div className="mt-3">
-            {isEditingEmail ? (
-              <div>
-                <div className="container text-start mb-2">
-                  <label htmlFor="email" className="form-label">
-                    Name
-                  </label>
-                </div>
-                <input
-                  type="email"
-                  className="form-control"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <div className="container mt-2 ms-3 text-end">
-                  <button
-                    className="btn btn-success "
-                    onClick={handleSaveChangesEmail}
-                  >
-                    Save Changes
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="mt-5 d-flex justify-content-between">
-                <div>
-                  <span>Email Address: </span>
-                  <span>{email}</span>
-                </div>
-                <div>
-                  <button
-                    className="btn btn-primary "
-                    onClick={() => setIsEditingEmail(true)}
-                  >
-                    Change Email Address
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-          <div className="mt-3">
-            {isEditingPassword ? (
-              <div>
-                <div className="container text-start mb-2">
-                  <label htmlFor="password" className="form-label">
-                    Password
-                  </label>
-                </div>
 
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <div className="container mt-2 ms-3 text-end">
-                  <button
-                    className="btn btn-success "
-                    onClick={handleSaveChangesPassword}
-                  >
-                    Save Changes
-                  </button>
-                </div>
+          <div className="mt-3">
+            <div className="mt-5 d-flex justify-content-between">
+              <div>
+                <span>Password: </span>
+                <span>********</span>
               </div>
-            ) : (
-              <div className="mt-5 d-flex justify-content-between">
-                <div>
-                  <span>Password: </span>
-                  <span>********</span>
-                </div>
-                <div>
-                  <button
-                    className="btn btn-primary "
-                    onClick={() => setIsEditingPassword(true)}
-                  >
-                    Change Password{" "}
-                  </button>
-                </div>
+              <div>
+                <button
+                  data-bs-toggle="modal"
+                  data-bs-target="#passwordmodal"
+                  className="btn btn-primary"
+                >
+                  Change Password{" "}
+                </button>
               </div>
-            )}
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="mt-5 d-flex justify-content-between">
+              <div>
+                <span>Email Address: </span>
+                <span>{email}</span>
+              </div>
+              <div>
+        
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,10 +1,11 @@
 import React from 'react'
 import MyImagePickerAlbum from '../../../components/ImagePickers/MyImagePickerAlbum'
 
-const BusinessPage2 = () => {
+
+const BusinessPage2 = (props) => {
   return (
     <div>
-      <MyImagePickerAlbum/>
+      <MyImagePickerAlbum showAlert={props.showAlert}/>
     </div>
   )
 }

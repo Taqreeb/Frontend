@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import pic from "../img/contact-us.png";
 import {
   FaMapMarkerAlt,
@@ -10,6 +10,7 @@ import {
   FaWhatsapp,
 } from "react-icons/fa";
 import WhatsappChat from "react-whatsapp";
+import emailjs from "@emailjs/browser";
 const whatsappIcon = <FaWhatsapp />;
 const youtubeIcon = <FaYoutube />;
 const instagramIcon = <FaInstagram />;
@@ -17,19 +18,38 @@ const facebookIcon = <FaFacebook />;
 const emailIcon = <FaRegEnvelope />;
 const phoneIcon = <FaPhoneAlt />;
 const mapMarkerIcon = <FaMapMarkerAlt />;
-const Contact = () => {
+const Contact = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+
   const [message, setMessage] = useState("");
   const [nameError, setNameError] = useState("");
-  const [phoneError, setPhoneError] = useState("");
+
   const [emailError, setEmailError] = useState("");
   const [messageError, setMessageError] = useState("");
+  const form = useRef();
 
-  const handlePhoneChange = (e) => {
-    setPhone(e.target.value);
-    setPhoneError("");
+  const sendEmail = (e) => {
+    e.preventDefault();
+    if (name && email && message) {
+      emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, form.current, process.env.REACT_APP_PUBLIC_KEY).then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+    }
+    props.showAlert("Message successfully sent", "success")
+    setName("");
+    setEmail("");
+
+    setMessage("");
+    setNameError("");
+    setEmailError("");
+
+    setMessageError("");
   };
 
   const handleNameChange = (e) => {
@@ -39,16 +59,6 @@ const Contact = () => {
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
     setMessageError("");
-  };
-  const handlePhoneInvalid = (e) => {
-    e.preventDefault();
-    if (phone) {
-      setPhoneError(
-        "Please enter a valid phone number in the format 03XXXXXXXXX or +923XXXXXXXXX"
-      );
-    } else {
-      setPhoneError("phone number is required");
-    }
   };
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -63,20 +73,6 @@ const Contact = () => {
       setEmailError("Email address is required");
     }
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (name && email && phone && message) {
-      console.log("Form submitted:", { name, email, phone, message });
-      setName("");
-      setEmail("");
-      setPhone("");
-      setMessage("");
-      setNameError("");
-      setEmailError("");
-      setPhoneError("");
-      setMessageError("");
-    }
-  };
 
   return (
     <div>
@@ -84,7 +80,7 @@ const Contact = () => {
         <img
           src={pic}
           className="card-img"
-          style={{ height: "40vh"  }}
+          style={{ height: "40vh" }}
           alt="..."
         />
         <div className="card-img-overlay">
@@ -136,13 +132,14 @@ const Contact = () => {
         </div>
         <div className="col-5">
           <h2 className="my-4">How can we help you?</h2>
-          <form onSubmit={handleSubmit}>
+          <form ref={form} onSubmit={sendEmail}>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
                 Name
               </label>
               <input
                 type="text"
+                name="name"
                 className="form-control"
                 id="name"
                 placeholder="Enter your full name"
@@ -163,6 +160,7 @@ const Contact = () => {
               <input
                 type="email"
                 className="form-control"
+                name="email"
                 id="email"
                 placeholder="Enter your email"
                 onInvalid={handleEmailInvalid}
@@ -173,31 +171,15 @@ const Contact = () => {
               {emailError && <p className="text-danger">{emailError}</p>}
             </div>
             <div className="mb-3">
-              <label htmlFor="phone" className="form-label">
-                Phone
-              </label>
-              <input
-                type="tel"
-                className="form-control"
-                id="phone"
-                placeholder="Enter your phone no"
-                value={phone}
-                pattern="^(03|\+923)[0-9]{2}[0-9]{7}$"
-                onInvalid={handlePhoneInvalid}
-                onChange={handlePhoneChange}
-                required
-              />
-              {phoneError && <p className="text-danger">{phoneError}</p>}
-            </div>
-            <div className="mb-3">
               <label htmlFor="message" className="form-label">
                 Message
               </label>
               <textarea
                 className="form-control"
-                style={{resize:"none"}}
+                style={{ resize: "none" }}
                 id="message"
                 placeholder="Enter your Message"
+                name="message"
                 rows="3"
                 value={message}
                 onInvalid={(e) => {

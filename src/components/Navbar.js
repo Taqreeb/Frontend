@@ -4,13 +4,17 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { FaUser, FaSignOutAlt } from "react-icons/fa";
 const Navbar = (props) => {
+  
   const navigate = useNavigate();
   const logoutIcon = <FaSignOutAlt />;
   const profileIcon = <FaUser />;
-  const [isLogin, setIsLogin] = useState(true);
+  const isLogin = localStorage.getItem('isLogin')==="true"
+  const profilePicture = localStorage.getItem('profile_picture')
+
   const handleLogout = () => {
-    setIsLogin(false);
+   localStorage.clear()
     navigate("/");
+    props.showAlert("Successfully Logged out","success")
   };
   return (
     <>
@@ -168,8 +172,8 @@ const Navbar = (props) => {
                   aria-expanded="false"
                 >
                   <img
-                    src="https://images.unsplash.com/photo-1639879646636-c49a99c658eb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=410&q=80"
-                    alt="Logo"
+                    src={profilePicture}
+                    alt="Profile"
                     className="rounded-circle"
                     data-toggle="dropdown"
                     id="navbarDropdown"

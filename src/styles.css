@@ -80,13 +80,13 @@
 /* visibile eye*/
 #eye-icon-login-password {
   position: absolute;
-  top: 35%;
+  top: 37%;
   right: 10%;
 }
 
 #eye-icon-signup-password {
   position: absolute;
-  top: 35%;
+  top: 38%;
   right: 10%;
 }
 
@@ -266,6 +266,10 @@ input[type="number"]::-webkit-outer-spin-button {
   border: solid #dee2e6!important;
 }
 
-
-
-
+.alertmessage{
+  position: fixed;
+  z-index: 1010;
+  right: 1rem;
+  left: 1rem;
+  text-align: center;
+}
