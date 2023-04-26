@@ -1,11 +1,12 @@
 import React from 'react'
 
-const NoLogin = () => {
+const NoLogin = ({role}) => {
   return (
   
     <div className="text-center" style={{marginTop:"30vh"}} >    
-       <h1>Sorry You are not logged in</h1>
-      <p>Please Login to view the requested page</p>
+       <h1>Sorry You are not authorized to access this page</h1>  
+      {role?<p>{`Please Login as a ${role} to view the requested page`}</p>:
+      <p>Please Login to view the requested page</p>}
     </div>
   )
 }

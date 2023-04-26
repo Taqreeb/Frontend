@@ -101,7 +101,7 @@ const Contact = (props) => {
             </p>
             <p className="d-flex ">
               <i className="fs-6 mx-1">{emailIcon}</i>
-              taqreeb2@gmail.com
+              taqreeb845@gmail.com
             </p>
             <p className="d-flex">
               <i className="fs-6 mx-1 ">{phoneIcon}</i>

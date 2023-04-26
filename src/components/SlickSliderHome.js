@@ -9,8 +9,11 @@ import StarRating from "./StarRating";
 const mapMarker = <FaMapMarkerAlt />;
 
 const SlickSliderHome = (props) => {
-  const { title, vendors, vendorType } = props;
-  const vendor = vendors.filter((vendor) => vendor.vendor_type === vendorType);
+  const { title, businesses, vendorType } = props;
+  console.log(businesses)
+  const vendor = businesses.filter(
+    (businesses) => businesses.business_type === vendorType
+  );
   const sortedProducts = vendor.sort((a, b) => b.rating - a.rating);
   const topRatedProducts = sortedProducts.slice(0, 6);
   var settings = {
@@ -62,11 +65,11 @@ const SlickSliderHome = (props) => {
         <div />
       )}
       <Slider {...settings}>
-        {topRatedProducts.map((vendor) => (
+        {topRatedProducts.map((business) => (
           <NavLink
-            key={vendor.id}
-            state={{cards: vendor}}
-            to={`/category/${vendorType}/${vendor.business_name}/${vendor.id}`}
+            key={business._id}
+            state={{ cards: business }}
+            to={`/category/${vendorType}/${business.business_name}/${business.vendor_id}/${business._id}`}
           >
             {" "}
             <div
@@ -74,23 +77,23 @@ const SlickSliderHome = (props) => {
               style={{ width: "98%" }}
             >
               <img
-                src={vendor.display_picture}
+                src={business.business_display_picture}
                 className="card-img"
-                alt={vendor.business_name}
+                alt={business.business_name}
                 style={{ maxHeight: "250px", minHeight: "250px" }}
               />
               <div className="card-overlay ">
                 <div className="d-flex justify-content-between">
                   <h5 className=" card-title text-uppercase ">
-                    {vendor.business_name}
+                    {business.business_name}
                   </h5>
-                  <p>{vendor.no_of_reviews}Reviews</p>
+                  <p>{business.numOfReviews}Reviews</p>
                 </div>
                 <div className="d-flex justify-content-between">
                   <p className=" card-text ">
-                    <i className="fs-6">{mapMarker}</i> {vendor.location}
+                    <i className="fs-6">{mapMarker}</i> {business.business_location}
                   </p>
-                  <StarRating star={vendor.rating} />
+                  <StarRating star={business.rating} />
                 </div>
               </div>
             </div>

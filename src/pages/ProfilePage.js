@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import MyImagePickerProfile from "../components/ImagePickers/MyImagePickerProfile";
 import axios from "axios";
 import ChangePasswordModal from "../components/ChangePasswordModal";
+import { API_URL } from "../utils/apiUrl";
 
 const ProfilePage = (props) => {
   const validPhoneNo = new RegExp("^(03|\\+923)[0-9]{2}[0-9]{7}$");
@@ -24,7 +25,7 @@ const ProfilePage = (props) => {
     if (firstName) {
       try {
         await axios.put(
-          `http://localhost:5000/${role}/updateFirstName`,
+          `${API_URL}/${role}/updateFirstName`,
           { FirstName: firstName },
           {
             headers: {
@@ -55,7 +56,7 @@ const ProfilePage = (props) => {
     if (lastName) {
       try {
         await axios.put(
-          `http://localhost:5000/${role}/updateLastName`,
+          `${API_URL}/${role}/updateLastName`,
           { LastName: lastName },
           {
             headers: {
@@ -87,7 +88,7 @@ const ProfilePage = (props) => {
       if (validPhoneNo.test(phone)) {
         try {
           await axios.put(
-            `http://localhost:5000/${role}/updatePhone`,
+            `${API_URL}/${role}/updatePhone`,
             { PhoneNo: phone },
             {
               headers: {
@@ -124,7 +125,7 @@ const ProfilePage = (props) => {
   const getProfile = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/${role}/profile`,
+        `${API_URL}/${role}/profile`,
         {
           headers: {
             "Content-Type": "application/json",

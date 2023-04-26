@@ -33,6 +33,18 @@
   margin-bottom: -3rem;
 }
 
+.background-top-add-business {
+  background-color: #d9d9d9;
+  height: 140px;
+  width: 100%;
+}
+
+.background-top-business-approval {
+  background-color: #d9d9d9;
+  height: 140px;
+  width: 100%;
+}
+
 .background-top-specific-vendor {
   background-color: #d9d9d9;
   height: 140px;

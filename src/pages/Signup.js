@@ -3,6 +3,7 @@ import "../styles.css";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../utils/apiUrl";
 const eye = <FaEye />;
 const eyeSlash = <FaEyeSlash />;
 
@@ -25,6 +26,8 @@ const Signup = (props) => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const [loading,setLoading] = useState(false)
+
   const handlePhoneInvalid = (e) => {
     e.preventDefault();
     if (phoneNo) {
@@ -46,6 +49,7 @@ const Signup = (props) => {
   };
 
   const handleFormSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (firstName && lastName && phoneNo && email && password) {
       try {
@@ -60,7 +64,7 @@ const Signup = (props) => {
         setLastNameError("");
         setPhoneError("");
         const response = await axios.post(
-          "http://localhost:5000/auth/signup",
+          `${API_URL}/auth/signup`,
           {
             FirstName: firstName,
             LastName: lastName,
@@ -73,9 +77,11 @@ const Signup = (props) => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log(JSON.stringify(response.data));
+        if(response.data.success){
+        setLoading(false);
         props.showAlert("User Registered Successfully", "success");
         navigate("/");
+      }
       } catch (error) {
         if (error.response) {
           console.log(error.response);

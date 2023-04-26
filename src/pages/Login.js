@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles.css";
 import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
+import {API_URL} from "../utils/apiUrl";
 const eye = <FaEye />;
 const eyeSlash = <FaEyeSlash />;
 
@@ -35,20 +36,25 @@ const Login = (props) => {
     if (email && password) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/auth/login",
+          `${API_URL}/auth/login`,
           { Email: email, Password: password },
           {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log(JSON.stringify(response.data));
+        
         if (response.data.authtoken) {
           setEmail("");
           setPassword("");
+          localStorage.setItem("id", response.data.id);
           localStorage.setItem("authtoken", response.data.authtoken);
-          localStorage.setItem("role",response.data.role)
-          localStorage.setItem("isLogin","true")
-          localStorage.setItem("profile_picture",response.data.profile_picture)
+          localStorage.setItem("role", response.data.role);
+
+          localStorage.setItem("isLogin", "true");
+          localStorage.setItem(
+            "profile_picture",
+            response.data.profile_picture
+          );
           navigate("/");
           props.showAlert("Logged in Successfully", "success");
         }

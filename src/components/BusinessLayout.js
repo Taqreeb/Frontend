@@ -1,26 +1,19 @@
-import React, { useEffect, useState } from "react";
-import CategoryCard from "./CategoryCard";
+import React,{ useEffect, useState } from "react";
+import BusinessCards from "./BusinessCards";
 import { returnPaginationPage } from "../utils/pagination-utils";
-
-const CategoryLayout = ({ business, description, vendorType }) => {
-  const photographerUrl =
-    "https://theceremonio.blob.core.windows.net/theceremonio-container/categories%2Fmedium%2Fu_1636922726681";
-  const venueUrl =
-    "https://theceremonio.blob.core.windows.net/theceremonio-container/categories/venue.jpg";
-  const catererUrl =
-    "https://theceremonio.blob.core.windows.net/theceremonio-container/categories%2Fmedium%2Fu_1629363594624";
+const BusinessLayout = ({ business,showAlert }) => {
   const decoratorUrl =
     "https://theceremonio.blob.core.windows.net/theceremonio-container/banners%2F608ec2df8706755965e469f9%2Flarge%2F1628351186601";
-  const musicUrl =
-    "https://theceremonio.blob.core.windows.net/theceremonio-container/categories%2Fmedium%2Fu_1632909619435";
 
-  const title = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
   const locations = business.filter(
     (card, index) =>
-      business.findIndex((l) => l.business_location === card.business_location) === index,
+      business.findIndex(
+        (l) => l.business_location === card.business_location
+      ) === index
   );
 
   const [filters, setFilters] = useState({
+    status:"",
     price: "",
     location: "",
     rating: "",
@@ -39,6 +32,7 @@ const CategoryLayout = ({ business, description, vendorType }) => {
 
   const clearFilters = () => {
     setFilters({
+      status:"",
       price: "",
       location: "",
       rating: "",
@@ -49,11 +43,14 @@ const CategoryLayout = ({ business, description, vendorType }) => {
 
   useEffect(() => {
     clearFilters();
-  }, [vendorType]);
+  }, []);
 
   const filteredData = business.filter((item) => {
     return (
-      (filters.location === "" || item.business_location === filters.location) &&
+      (filters.location === "" ||
+        item.business_location === filters.location) &&
+        (filters.status === "" ||
+        item.business_status === filters.status) &&
       (filters.rating === "" || item.rating >= filters.rating) &&
       (filters.minPrice === "" || item.estimated_price >= filters.minPrice) &&
       (filters.maxPrice === "" || item.estimated_price <= filters.maxPrice)
@@ -102,33 +99,21 @@ const CategoryLayout = ({ business, description, vendorType }) => {
     <div className="background-vendor-layout">
       <div className="card text-bg-dark rounded-0">
         <img
-          src={
-            vendorType === "photographer"
-              ? photographerUrl
-              : vendorType === "venue"
-              ? venueUrl
-              : vendorType === "music"
-              ? musicUrl
-              : vendorType === "caterer"
-              ? catererUrl
-              : vendorType === "decorator"
-              ? decoratorUrl
-              : ""
-          }
+          src={decoratorUrl}
           className="card-img"
           style={{ height: "30vh", objectFit: "cover" }}
           alt="..."
         />
         <div className="card-img-overlay">
-          <h1 className="card-title ms-5 mt-5">{title}</h1>
-          <p className="card-text ms-5">{description}</p>
+          <h1 className="card-title ms-5 mt-5">Vendor Businesses</h1>
+          <p className="card-text ms-5">These are all of your businesses</p>
         </div>
       </div>
       <div className="row">
         <div className="col-3">
           <div
             className="card mx-5 my-5 rounded-4"
-            style={{ width: "300px", height: "800px", maxHeight: "800px" }}
+            style={{ width: "300px", height: "950px", maxHeight: "950px" }}
           >
             <div className="container mt-3">
               <div className="d-flex justify-content-between">
@@ -137,6 +122,21 @@ const CategoryLayout = ({ business, description, vendorType }) => {
                   Clear All Filters
                 </u>
               </div>
+              <div className="container my-5">
+                <h5 className="">Business Status</h5>
+                <select
+                  className="dropdown-filter"
+                  value={filters.status}
+                  onChange={(e) => handleFilterChange("status", e.target.value)}
+                >
+                  <option value="">Sort by Business Status</option>
+                  <option value="approved">Approved</option>
+                  <option value="pending">Pending</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+
+              <hr className="divider-filter" />
               <div className="container my-5">
                 <h5>Location</h5>
                 <select
@@ -216,7 +216,7 @@ const CategoryLayout = ({ business, description, vendorType }) => {
           </div>
         </div>
         <div className="col my-5">
-          <CategoryCard cards={records} vendorType={vendorType} />
+          <BusinessCards cards={records} showAlert={showAlert} />
           {sortedData && (
             <nav>
               <ul className="pagination">
@@ -258,4 +258,4 @@ const CategoryLayout = ({ business, description, vendorType }) => {
   );
 };
 
-export default CategoryLayout;
+export default BusinessLayout;

@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const SlickSliderAlbums = ({ vendorAlbums,businessName,vendorType,vendorId }) => {
+const SlickSliderAlbums = ({businessDisplayPicture, vendorAlbums,businessName,vendorType,vendorId }) => {
   var settings = {
     dots: false,
     infinite: false,
@@ -38,9 +38,9 @@ const SlickSliderAlbums = ({ vendorAlbums,businessName,vendorType,vendorId }) =>
     <Slider className="album-slider mx-1" {...settings}>
       {vendorAlbums.map((album) => (
         <NavLink
-          key={album.id}
-          state={{ album: album }}
-          to = {`/category/${vendorType}/${businessName}/${vendorId}/${album.name}`}
+          key={album._id}
+          state={{ album: album, businessDisplayPicture:businessDisplayPicture }}
+          to = {`/category/${vendorType}/${businessName}/${vendorId}/${album.album_name}/${album._id}`}
         >
           {" "}
           <div
@@ -48,13 +48,13 @@ const SlickSliderAlbums = ({ vendorAlbums,businessName,vendorType,vendorId }) =>
             style={{ width: "98%" }}
           >
             <img
-              src={album.images[0]}
+              src={album.images[0].url}
               className="card-img"
-              alt={album.name}
+              alt={album.album_name}
               style={{ maxHeight: "120px", minHeight: "120px" }}
             />
             <div className="card-overlay ">
-              <h6 style={{marginBottom:"5.5rem"}}>{album.name}</h6>
+              <h6 style={{marginBottom:"5.5rem"}}>{album.album_name}</h6>
             </div>
           </div>
         </NavLink>

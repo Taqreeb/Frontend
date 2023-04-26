@@ -35,8 +35,8 @@ const SlickSliderPackages = ({ vendorPackages }) => {
 
   return (
     <Slider {...settings}>
-      {vendorPackages.map((packages, index) => (
-        <div key={index} className="container">
+      {vendorPackages.map((packages) => (
+        <div key={packages._id} className="container">
         <div className="card text-black text-center">
           <img
             src={cash}

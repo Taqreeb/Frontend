@@ -63,6 +63,14 @@ const Navbar = (props) => {
                   <li className="nav-item">
                     <NavLink
                       className="nav-link active text-light font fontweight-400"
+                      to="/admin/businessapprovals"
+                    >
+                      BusinessApprovals
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink
+                      className="nav-link active text-light font fontweight-400"
                       to="/vendor/viewbusiness"
                     >
                       ViewBusiness
