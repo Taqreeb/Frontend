@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import "../styles.css";
-import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import {FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../utils/apiUrl";
@@ -301,14 +301,14 @@ const Signup = (props) => {
             {phoneError && <span className="text-danger"> {phoneError}</span>}
           </div>
 
-          <button
+          {!loading?<button
             type="submit"
             className="btn btn-primary rounded-4 bg-black border-0 my-3 w-100 font fontweight-600"
           >
             Signup
-          </button>
+          </button>:<p className="text-center">Signing up...</p>}
         </form>
-        <p className="text-secondary text-center opacity-75 font fontweight-500">
+        {/* <p className="text-secondary text-center opacity-75 font fontweight-500">
           Or Signup with
         </p>
         <button
@@ -326,7 +326,7 @@ const Signup = (props) => {
             }}
           />
           Continue with Google
-        </button>
+        </button> */}
 
         <p className="float-end mx-auto mt-2 text-dark font fontweight-500">
           Already have an account?{" "}

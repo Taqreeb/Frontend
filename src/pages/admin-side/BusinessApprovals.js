@@ -5,17 +5,16 @@ import { FaCheck, FaTimes } from "react-icons/fa";
 import LoadingScreen from "../../components/LoadingScreen";
 import { NavLink } from "react-router-dom";
 import { returnPaginationPage } from "../../utils/pagination-utils";
-
+const approveButton = <FaCheck />;
+const rejectButton = <FaTimes />;
 const BusinessApprovals = ({ showAlert }) => {
   const [loading, setLoading] = useState(false);
-  const [acceptloading, setAcceptLoading] = useState(false);
-  const [rejectloading, setRejectLoading] = useState(false);
   const [businesses, setBusinesses] = useState([]);
   const [statusClicked, setStatusClicked] = useState(false);
   const role = localStorage.getItem("role");
   const authtoken = localStorage.getItem("authtoken");
-  const approveRef = useRef(null);
-  const rejectRef = useRef(null);
+
+  const modalRef = useRef(null);
 
   const getApprovedBusiness = async () => {
     setLoading(true);
@@ -41,7 +40,6 @@ const BusinessApprovals = ({ showAlert }) => {
   };
 
   const handleApprove = async (id) => {
-    setAcceptLoading(true);
     try {
       const response = await axios.put(
         `${API_URL}/${role}/businesses/${id}/status`,
@@ -54,10 +52,9 @@ const BusinessApprovals = ({ showAlert }) => {
         }
       );
       if (response.data.success) {
-        approveRef.current.setAttribute("data-bs-dismiss", "modal");
-        approveRef.current.click();
+        modalRef.current.setAttribute("data-bs-dismiss", "modal");
+        modalRef.current.click();
         showAlert("The business has been approved", "success");
-        setAcceptLoading(false);
         setStatusClicked(true);
       }
     } catch (error) {
@@ -72,7 +69,6 @@ const BusinessApprovals = ({ showAlert }) => {
   };
 
   const handleReject = async (id) => {
-    setRejectLoading(true);
     try {
       const response = await axios.put(
         `${API_URL}/${role}/businesses/${id}/status`,
@@ -85,10 +81,10 @@ const BusinessApprovals = ({ showAlert }) => {
         }
       );
       if (response.data.success) {
-        rejectRef.current.setAttribute("data-bs-dismiss", "modal");
-        rejectRef.current.click();
+        modalRef.current.setAttribute("data-bs-dismiss", "modal");
+        modalRef.current.click();
         showAlert("The business has been rejected", "danger");
-        setRejectLoading(false);
+
         setStatusClicked(true);
       }
     } catch (error) {
@@ -112,7 +108,7 @@ const BusinessApprovals = ({ showAlert }) => {
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         aria-hidden="true"
-        ref={approveRef}
+        ref={modalRef}
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -125,27 +121,21 @@ const BusinessApprovals = ({ showAlert }) => {
               <p>Are You sure you want to approve this business?</p>
             </div>
             <div className="modal-footer">
-              {!acceptloading ? (
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-dark"
-                    data-bs-dismiss="modal"
-                  >
-                    No
-                  </button>
-                  <button
-                    type="button"
-                    id="button"
-                    className="btn btn-dark"
-                    onClick={handleApprove(id)}
-                  >
-                    Yes
-                  </button>
-                </>
-              ) : (
-                <p>Approving...</p>
-              )}
+              <button
+                type="button"
+                className="btn btn-dark"
+                data-bs-dismiss="modal"
+              >
+                No
+              </button>
+              <button
+                type="button"
+                id="button1"
+                className="btn btn-dark"
+                onClick={() => handleApprove(id)}
+              >
+                Yes
+              </button>
             </div>
           </div>
         </div>
@@ -163,7 +153,7 @@ const BusinessApprovals = ({ showAlert }) => {
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         aria-hidden="true"
-        ref={rejectRef}
+        ref={modalRef}
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -176,27 +166,21 @@ const BusinessApprovals = ({ showAlert }) => {
               <p>Are You sure you want to reject this business?</p>
             </div>
             <div className="modal-footer">
-              {!rejectloading ? (
-                <>
-                  <button
-                    type="button"
-                    className="btn btn-dark"
-                    data-bs-dismiss="modal"
-                  >
-                    No
-                  </button>
-                  <button
-                    type="button"
-                    id="button"
-                    className="btn btn-dark"
-                    onClick={handleReject(id)}
-                  >
-                    Yes
-                  </button>
-                </>
-              ) : (
-                <p>Rejecting...</p>
-              )}
+              <button
+                type="button"
+                className="btn btn-dark"
+                data-bs-dismiss="modal"
+              >
+                No
+              </button>
+              <button
+                type="button"
+                id="button2"
+                className="btn btn-dark"
+                onClick={() => handleReject(id)}
+              >
+                Yes
+              </button>
             </div>
           </div>
         </div>
@@ -247,96 +231,105 @@ const BusinessApprovals = ({ showAlert }) => {
               </p>
             </div>
           </div>
-          <div className="table-responsive mt-5 container">
-            <table className="table table-striped">
-              <thead>
-                <tr>
-                  <th>Business ID</th>
-                  <th>Business Name</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {records.map((business) => (
-                  <tr key={business._id}>
-                    <RejectStatusPopup id={business._id} />
-                    <AcceptStatusPopup id={business._id} />
-                    <td className="border-end">{business._id}</td>
-                    <td className="border-end">{business.business_name}</td>
-                    <td>
-                      <div className="container">
-                        <FaTimes
-                          className="text-danger fs-5 mx-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#rejectStatus"
-                          style={{ cursor: "pointer" }}
-                        />
-                        <FaCheck
-                          className="text-success fs-5 mx-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#acceptStatus"
-                          style={{ cursor: "pointer" }}
-                        />
-                        <NavLink
-                          className="nav-link"
-                          to={`/businessdetails/${business.business_type}/${business.business_name}/${business.vendor_id}/${business._id}`}
-                          state={{ cards: business }}
-                        >
-                          {" "}
-                          <span className="text-primary ">View Business</span>
-                        </NavLink>
-                      </div>
-                    </td>
+          {businesses.length > 0 ? (
+            <div className="table-responsive mt-5 container">
+              <table className="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Business ID</th>
+                    <th>Business Name</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-            <div className="col ">
-              {businesses && (
-                <nav>
-                  <div className="d-flex justify-content-center">
-                    <ul className="pagination">
-                      <li
-                        onClick={() => setCurrentPage(1)}
-                        className="page-link pagination-hover"
-                      >
-                        &laquo;
-                      </li>
-                      <li
-                        onClick={prevPage}
-                        className="page-link pagination-hover"
-                      >
-                        &lsaquo;
-                      </li>
-                      {array.map((value) => (
+                </thead>
+                <tbody>
+                  {records.map((business) => (
+                    <tr key={business._id}>
+                      <td className="border-end">{business._id}</td>
+                      <td className="border-end">{business.business_name}</td>
+                      <td>
+                        <div className="container">
+                          <i
+                            className="text-danger fs-5 mx-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#rejectStatus"
+                            style={{ cursor: "pointer" }}
+                          >
+                            {rejectButton}
+                          </i>
+                          <RejectStatusPopup id={business._id} />
+
+                          <i
+                            className="text-success fs-5 mx-2"
+                            data-bs-toggle="modal"
+                            data-bs-target="#acceptStatus"
+                            style={{ cursor: "pointer" }}
+                          >
+                            {approveButton}
+                          </i>
+                          <AcceptStatusPopup id={business._id} />
+                          <NavLink
+                            className="nav-link"
+                            to={`/businessdetails/${business.business_type}/${business.business_name}/${business.vendor_id}/${business._id}`}
+                            state={{ cards: business }}
+                          >
+                            {" "}
+                            <span className="text-primary ">View Business</span>
+                          </NavLink>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div className="col ">
+                {businesses && (
+                  <nav>
+                    <div className="d-flex justify-content-center">
+                      <ul className="pagination">
                         <li
-                          key={value}
-                          onClick={() => paginate(value)}
-                          className={`page-link ${
-                            currentPage === value ? "active" : ""
-                          } pagination-hover`}
+                          onClick={() => setCurrentPage(1)}
+                          className="page-link pagination-hover"
                         >
-                          {value}
+                          &laquo;
                         </li>
-                      ))}
-                      <li
-                        onClick={nextPage}
-                        className="page-link pagination-hover"
-                      >
-                        &rsaquo;
-                      </li>
-                      <li
-                        onClick={() => setCurrentPage(totalPage)}
-                        className="page-link pagination-hover"
-                      >
-                        &raquo;
-                      </li>
-                    </ul>
-                  </div>
-                </nav>
-              )}
+                        <li
+                          onClick={prevPage}
+                          className="page-link pagination-hover"
+                        >
+                          &lsaquo;
+                        </li>
+                        {array.map((value) => (
+                          <li
+                            key={value}
+                            onClick={() => paginate(value)}
+                            className={`page-link ${
+                              currentPage === value ? "active" : ""
+                            } pagination-hover`}
+                          >
+                            {value}
+                          </li>
+                        ))}
+                        <li
+                          onClick={nextPage}
+                          className="page-link pagination-hover"
+                        >
+                          &rsaquo;
+                        </li>
+                        <li
+                          onClick={() => setCurrentPage(totalPage)}
+                          className="page-link pagination-hover"
+                        >
+                          &raquo;
+                        </li>
+                      </ul>
+                    </div>
+                  </nav>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <h1>No Pending Businesses to show</h1>
+          )}
         </>
       ) : (
         <LoadingScreen />

@@ -24,6 +24,11 @@
   height: 140vh;
 }
 
+.background-business-profile{
+  background-color: #eff2f6;
+  height: 300vh;
+}
+
 .background-vendor-cards-overlay {
   background-color: #eff2f6;
 }
@@ -92,13 +97,13 @@
 /* visibile eye*/
 #eye-icon-login-password {
   position: absolute;
-  top: 37%;
+  top: 48%;
   right: 10%;
 }
 
 #eye-icon-signup-password {
   position: absolute;
-  top: 38%;
+  top: 47%;
   right: 10%;
 }
 

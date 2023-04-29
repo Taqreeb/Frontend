@@ -5,6 +5,7 @@ import { API_URL } from "../../utils/apiUrl";
 import LoadingScreen from '../../components/LoadingScreen';
 const ViewBusiness = ({showAlert}) => {
   const [business,setBusiness ] = useState([]);
+  const [deletedBusiness,setDeletedBusiness] = useState(false);
   const [loading,setLoading ] = useState(false);
   const authtoken = localStorage.getItem('authtoken')
 
@@ -36,11 +37,11 @@ const ViewBusiness = ({showAlert}) => {
   };
   useEffect(()=>{
    getVendorBusiness();
-  },[])
+  },[deletedBusiness])
   return (
     <>
     {!loading?<div>
-       <BusinessLayout business={business} showAlert={showAlert}/>
+       <BusinessLayout business={business} showAlert={showAlert} setDeletedBusiness={setDeletedBusiness}/>
     </div>: <LoadingScreen/>}
     </>
   )

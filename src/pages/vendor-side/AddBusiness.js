@@ -274,7 +274,7 @@ const AddBusiness = (props) => {
                 setLocationError("");
               }}
               onInvalid={() => {
-                setLocationError("Vendor Type is required");
+                setLocationError("Business Location is required");
               }}
               id="area-dropdown"
               required
@@ -346,7 +346,7 @@ const AddBusiness = (props) => {
             Business Estimated Price: (in PKR)
           </label>
           <input
-            type="Number"
+            type="number"
             min="0"
             id="businessEstimatedPrice"
             value={businessEstimatedPrice}
@@ -463,7 +463,7 @@ const AddBusiness = (props) => {
                 Venue Persons Capacity:
               </label>
               <input
-                type="Number"
+                type="number"
                 id="venuePersonsCapacity"
                 min="0"
                 value={venuePersonsCapacity}
@@ -496,7 +496,7 @@ const AddBusiness = (props) => {
               </label>
             </div>
             <input
-              type="Number"
+              type="number"
               id="venuecoveragearea"
               className="form-control"
               min="0"
@@ -526,7 +526,7 @@ const AddBusiness = (props) => {
               Silver Package Price: (in PKR)
             </label>
             <input
-              type="Number"
+              type="number"
               id="silver"
               name="silver"
               min="0"
@@ -549,7 +549,7 @@ const AddBusiness = (props) => {
               Gold Package Price: (in PKR)
             </label>
             <input
-              type="Number"
+              type="number"
               id="gold"
               name="gold"
               min="0"
@@ -572,7 +572,7 @@ const AddBusiness = (props) => {
               Platinum Package Price: (in PKR)
             </label>
             <input
-              type="Number"
+              type="number"
               id="platinum"
               name="platinum"
               min="0"

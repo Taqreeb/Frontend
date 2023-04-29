@@ -26,6 +26,8 @@ import Alert from "./components/Alert";
 import NoLogin from "./pages/NoLogin";
 import BusinessDetails from "./pages/vendor-side/BusinessDetails";
 import BusinessApprovals from "./pages/admin-side/BusinessApprovals";
+import EditBusinessProfile from "./pages/vendor-side/EditBusinessProfile";
+import EditBusinessAlbums from "./pages/vendor-side/EditBusinessAlbums";
 
 function App() {
   const [alert, setAlert] = useState(null);
@@ -117,7 +119,22 @@ function App() {
           />
           <Route
             exact
-            path="/vendor/viewbusiness/edit"
+            path="/vendor/viewbusiness/edit/:businessId"
+            element={<EditBusiness />}
+          />
+           <Route
+            exact
+            path="/vendor/viewbusiness/edit/:businessId/businessProfile"
+            element={<EditBusinessProfile showAlert={showAlert} />}
+          />
+           <Route
+            exact
+            path="/vendor/viewbusiness/edit/:businessId/businessAlbums"
+            element={<EditBusinessAlbums />}
+          />
+           <Route
+            exact
+            path="/vendor/viewbusiness/edit/businessprofileinfo"
             element={<EditBusiness />}
           />
           <Route

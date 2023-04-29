@@ -1,7 +1,7 @@
 import React,{ useEffect, useState } from "react";
 import BusinessCards from "./BusinessCards";
 import { returnPaginationPage } from "../utils/pagination-utils";
-const BusinessLayout = ({ business,showAlert }) => {
+const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
   const decoratorUrl =
     "https://theceremonio.blob.core.windows.net/theceremonio-container/banners%2F608ec2df8706755965e469f9%2Flarge%2F1628351186601";
 
@@ -216,7 +216,7 @@ const BusinessLayout = ({ business,showAlert }) => {
           </div>
         </div>
         <div className="col my-5">
-          <BusinessCards cards={records} showAlert={showAlert} />
+          <BusinessCards cards={records} showAlert={showAlert} setDeletedBusiness={setDeletedBusiness}/>
           {sortedData && (
             <nav>
               <ul className="pagination">

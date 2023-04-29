@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles.css";
-import { FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import {API_URL} from "../utils/apiUrl";
 const eye = <FaEye />;
@@ -12,6 +12,7 @@ const Login = (props) => {
   const [eyeShown, seteyeShown] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
   const handleEmailChange = (event) => {
     event.preventDefault();
@@ -32,6 +33,7 @@ const Login = (props) => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (email && password) {
       try {
@@ -57,10 +59,12 @@ const Login = (props) => {
           );
           navigate("/");
           props.showAlert("Logged in Successfully", "success");
+          setLoading(false)
         }
       } catch (error) {
         if (error.response) {
           props.showAlert("Invalid Credentials", "danger");
+          setLoading(false);
           console.log(error.response);
         } else if (error.request) {
           console.log("network error");
@@ -123,17 +127,17 @@ const Login = (props) => {
             </i>
           </div>
 
-          <button
+          {!loading ?<button
             type="submit"
             className="btn btn-primary rounded-4 bg-black border-0 my-2 w-100 font fontweight-600"
           >
             Login
-          </button>
+          </button>:<p className="text-center">Logging in...</p>}
         </form>
-        <p className="text-secondary text-center mt-2 opacity-75 font fontweight-500">
+        {/* <p className="text-secondary text-center mt-2 opacity-75 font fontweight-500">
           Or Login with
-        </p>
-        <button
+        </p> */}
+        {/* <button
           type="button"
           className="btn btn-outline w-100 my-2 rounded-4 font fontweight-400"
         >
@@ -148,7 +152,7 @@ const Login = (props) => {
             }}
           />
           Continue with Google
-        </button>
+        </button> */}
 
         <p className="float-end mt-2 mx-auto text-dark font fontweight-500">
           New to Taqreeb?{" "}

@@ -1,11 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
-import defaultImage from '../../img/default_profile.png'
 import { API_URL } from "../../utils/apiUrl";
-const MyImagePickerProfile = (props) => {
-  const {role, authtoken,setSaveButton } = props;
-  const profilePicture = localStorage.getItem('profile_picture')
-  const [image, setImage] = useState(profilePicture);
+
+const MyImagePickerBusiness = (props) => {
+  const {role, authtoken,setSaveButton,businessId,displayPicture } = props;
+  const [image, setImage] = useState(displayPicture);
   const [isEditPicture, SetIsEditPicture] = useState(false);
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -14,16 +13,13 @@ const MyImagePickerProfile = (props) => {
       setImage(reader.result);
     };
     reader.readAsDataURL(file);
-  };
+};
 
-  const handleRemovePictureButtonClick = () => {
-    setImage(defaultImage);
-  };
   const handleSavePictureButtonClick = async () => {
       try {
-        await axios.put(
-          `${API_URL}/${role}/updateProfilePicture`,
-          { profile_picture: image },
+        const response = await axios.put(
+          `${API_URL}/${role}/businessDisplay/${businessId}`,
+          { business_display_picture: image },
           {
             headers: {
               "Content-Type": "application/json",
@@ -31,11 +27,11 @@ const MyImagePickerProfile = (props) => {
             },
           }
         );
-        
-        props.showAlert("Profile Picture Changed Successfully", "success");
-        localStorage.setItem("profile_picture",image)
+        if(response.data.success){
+        props.showAlert("Business Display Picture Changed Successfully", "success");
         SetIsEditPicture(false);
         setSaveButton(true);
+        }
       } catch (error) {
         if (error.response) {
           console.log(error.response);
@@ -44,8 +40,7 @@ const MyImagePickerProfile = (props) => {
         } else {
           console.log(error);
         }
-      }
-    
+      }    
     
   };
 
@@ -62,9 +57,14 @@ const MyImagePickerProfile = (props) => {
       {!isEditPicture && (
         <button
           className="btn btn-primary mt-3"
-          onClick={() => SetIsEditPicture(true)}
+          onClick={
+            () => {
+              SetIsEditPicture(true)
+              console.log(displayPicture)
+            }
+          }
         >
-          Edit Profile Picture
+          Edit Business Display
         </button>
       )}
 
@@ -79,17 +79,10 @@ const MyImagePickerProfile = (props) => {
           />
           
             <label htmlFor="imageUpload" className="btn btn-primary mt-3 mx-3">
-              Change Profile Picture
+              Change Business Display
             </label>
           
-          {image && (
-            <button
-              className="btn btn-danger mt-3"
-              onClick={handleRemovePictureButtonClick}
-            >
-              Remove Profile Picture
-            </button>
-          )}
+         
           <br />
           <button
             className="btn btn-success mt-3"
@@ -103,4 +96,4 @@ const MyImagePickerProfile = (props) => {
   );
 };
 
-export default MyImagePickerProfile;
+export default MyImagePickerBusiness;

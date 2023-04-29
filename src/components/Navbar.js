@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { NavLink } from "../imports";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,8 @@ const Navbar = (props) => {
   const profileIcon = <FaUser />;
   const isLogin = localStorage.getItem('isLogin')==="true"
   const profilePicture = localStorage.getItem('profile_picture')
-
+  const isVendor = localStorage.getItem('isLogin')==="true" && localStorage.getItem('role')==="vendor"
+  const isAdmin = localStorage.getItem('isLogin')==="true" && localStorage.getItem('role')==="admin"
   const handleLogout = () => {
    localStorage.clear()
     navigate("/");
@@ -52,22 +53,23 @@ const Navbar = (props) => {
                       Home
                     </NavLink>
                   </li>
-                  <li className="nav-item">
+                  {isVendor &&<li className="nav-item">
                     <NavLink
                       className="nav-link active text-light font fontweight-400"
                       to="/vendor/addbusiness"
                     >
                       AddBusiness
                     </NavLink>
-                  </li>
-                  <li className="nav-item">
+                  </li>}
+                  {isAdmin &&<li className="nav-item">
                     <NavLink
                       className="nav-link active text-light font fontweight-400"
                       to="/admin/businessapprovals"
                     >
                       BusinessApprovals
                     </NavLink>
-                  </li>
+                  </li>}
+                  {isVendor&&
                   <li className="nav-item">
                     <NavLink
                       className="nav-link active text-light font fontweight-400"
@@ -75,7 +77,8 @@ const Navbar = (props) => {
                     >
                       ViewBusiness
                     </NavLink>
-                  </li>
+                  </li>}
+                  {!isVendor &&!isAdmin&&
                   <li className="nav-item dropdown">
                     <NavLink
                       className="nav-link dropdown-toggle active"
@@ -135,7 +138,7 @@ const Navbar = (props) => {
                         </NavLink>
                       </li>
                     </ul>
-                  </li>
+                  </li>}
                 </ul>
               </div>
               <li className="nav-item">
