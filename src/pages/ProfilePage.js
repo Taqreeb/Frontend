@@ -7,8 +7,9 @@ import { API_URL } from "../utils/apiUrl";
 const ProfilePage = (props) => {
   const validPhoneNo = new RegExp("^(03|\\+923)[0-9]{2}[0-9]{7}$");
   const role = localStorage.getItem("role");
-  const title = role.charAt(0).toUpperCase() + role.slice(1)
+  const title = role.charAt(0).toUpperCase() + role.slice(1);
   const authtoken = localStorage.getItem("authtoken");
+  const [click, setClick] = useState(false);
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -23,6 +24,7 @@ const ProfilePage = (props) => {
 
   const handleSaveChangesFirstName = async () => {
     if (firstName) {
+      setClick(true);
       try {
         await axios.put(
           `${API_URL}/${role}/updateFirstName`,
@@ -36,9 +38,11 @@ const ProfilePage = (props) => {
         );
         setFirstNameError("");
         props.showAlert("First Name Changed Successfully", "success");
+        setClick(false);
         setIsEditingFirstName(false);
-        setSaveButton(true);
+        setSaveButton(!saveButton);
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -54,6 +58,7 @@ const ProfilePage = (props) => {
 
   const handleSaveChangesLastName = async () => {
     if (lastName) {
+      setClick(true);
       try {
         await axios.put(
           `${API_URL}/${role}/updateLastName`,
@@ -67,9 +72,11 @@ const ProfilePage = (props) => {
         );
         setLastNameError("");
         props.showAlert("Last Name Changed Successfully", "success");
+        setClick(false);
         setIsEditingLastName(false);
-        setSaveButton(true);
+        setSaveButton(!saveButton);
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -86,6 +93,7 @@ const ProfilePage = (props) => {
   const handleSaveChangesPhone = async () => {
     if (phone) {
       if (validPhoneNo.test(phone)) {
+        setClick(true);
         try {
           await axios.put(
             `${API_URL}/${role}/updatePhone`,
@@ -100,10 +108,11 @@ const ProfilePage = (props) => {
           setPhoneError("");
 
           props.showAlert("Phone Number Changed Successfully", "success");
-
+          setClick(false);
           setIsEditingPhone(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         } catch (error) {
+          setClick(false);
           if (error.response) {
             console.log(error.response);
           } else if (error.request) {
@@ -124,15 +133,12 @@ const ProfilePage = (props) => {
 
   const getProfile = async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/${role}/profile`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": authtoken,
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/${role}/profile`, {
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": authtoken,
+        },
+      });
       setFirstName(response.data.FirstName);
       setLastName(response.data.LastName);
       setEmail(response.data.Email);
@@ -166,7 +172,8 @@ const ProfilePage = (props) => {
             role={role}
             authtoken={authtoken}
             setSaveButton={setSaveButton}
-            showAlert= {props.showAlert}
+            showAlert={props.showAlert}
+            saveButton={saveButton}
           />
         </div>
         <div
@@ -186,18 +193,34 @@ const ProfilePage = (props) => {
                   className="form-control"
                   id="firstname"
                   value={firstName}
-                  onChange={(e) => {setFirstName(e.target.value)
-                  setFirstNameError("")}}
+                  onChange={(e) => {
+                    setFirstName(e.target.value);
+                    setFirstNameError("");
+                  }}
                 />
                 <div className="container mt-2 ms-3 text-end">
-                  <button
-                    className="btn btn-success "
-                    onClick={handleSaveChangesFirstName}
-                  >
-                    Save Changes
-                  </button>
+                  {!click ? (
+                    <>
+                      <button
+                        className="btn btn-danger me-3"
+                        onClick={() => setIsEditingFirstName(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-success "
+                        onClick={handleSaveChangesFirstName}
+                      >
+                        Save Changes
+                      </button>
+                    </>
+                  ) : (
+                    <p>Saving...</p>
+                  )}
                 </div>
-                {firstNameError && <span className="text-danger">{firstNameError}</span>}
+                {firstNameError && (
+                  <span className="text-danger">{firstNameError}</span>
+                )}
               </div>
             ) : (
               <div className="d-flex justify-content-between">
@@ -230,20 +253,34 @@ const ProfilePage = (props) => {
                   id="lastname"
                   value={lastName}
                   onChange={(e) => {
-                    setLastName(e.target.value)
-                    setLastNameError("")
+                    setLastName(e.target.value);
+                    setLastNameError("");
                   }}
                   required
                 />
                 <div className="container mt-2 ms-3 text-end">
-                  <button
-                    className="btn btn-success "
-                    onClick={handleSaveChangesLastName}
-                  >
-                    Save Changes
-                  </button>
+                  {!click ? (
+                    <>
+                      <button
+                        className="btn btn-danger me-3"
+                        onClick={() => setIsEditingLastName(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-success "
+                        onClick={handleSaveChangesLastName}
+                      >
+                        Save Changes
+                      </button>
+                    </>
+                  ) : (
+                    <p>Saving...</p>
+                  )}
                 </div>
-                {lastNameError && <span className="text-danger">{lastNameError}</span>}
+                {lastNameError && (
+                  <span className="text-danger">{lastNameError}</span>
+                )}
               </div>
             ) : (
               <div className="mt-5 d-flex justify-content-between">
@@ -276,19 +313,33 @@ const ProfilePage = (props) => {
                   id="phone"
                   value={phone}
                   onChange={(e) => {
-                    setPhone(e.target.value)
-                    setPhoneError("")
+                    setPhone(e.target.value);
+                    setPhoneError("");
                   }}
                 />
                 <div className="container mt-2 ms-3 text-end">
-                  <button
-                    className="btn btn-success "
-                    onClick={handleSaveChangesPhone}
-                  >
-                    Save Changes
-                  </button>
+                  {!click ? (
+                    <>
+                      <button
+                        className="btn btn-danger me-3"
+                        onClick={() => setIsEditingPhone(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="btn btn-success "
+                        onClick={handleSaveChangesPhone}
+                      >
+                        Save Changes
+                      </button>
+                    </>
+                  ) : (
+                    <p>Saving...</p>
+                  )}
                 </div>
-                {phoneError && <span className="text-danger">{phoneError}</span>}
+                {phoneError && (
+                  <span className="text-danger">{phoneError}</span>
+                )}
               </div>
             ) : (
               <div className="mt-5 d-flex justify-content-between">
@@ -306,7 +357,6 @@ const ProfilePage = (props) => {
                 </div>
               </div>
             )}
-           
           </div>
 
           <div className="mt-3">
@@ -332,9 +382,7 @@ const ProfilePage = (props) => {
                 <span>Email Address: </span>
                 <span>{email}</span>
               </div>
-              <div>
-        
-              </div>
+              <div></div>
             </div>
           </div>
         </div>

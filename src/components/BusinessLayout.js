@@ -1,7 +1,12 @@
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import BusinessCards from "./BusinessCards";
 import { returnPaginationPage } from "../utils/pagination-utils";
-const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
+const BusinessLayout = ({
+  business,
+  showAlert,
+  setDeletedBusiness,
+  deletedBusiness,
+}) => {
   const decoratorUrl =
     "https://theceremonio.blob.core.windows.net/theceremonio-container/banners%2F608ec2df8706755965e469f9%2Flarge%2F1628351186601";
 
@@ -13,14 +18,17 @@ const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
   );
 
   const [filters, setFilters] = useState({
-    status:"",
+    status: "",
     price: "",
     location: "",
     rating: "",
     minPrice: "",
     maxPrice: "",
+    bookedDates: "",
   });
-
+  const [searchInput, setSearchInput] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
   const ratings = [1, 2, 3, 4, 5];
 
   const handleFilterChange = (filter, value) => {
@@ -32,28 +40,48 @@ const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
 
   const clearFilters = () => {
     setFilters({
-      status:"",
+      status: "",
       price: "",
       location: "",
       rating: "",
       minPrice: "",
       maxPrice: "",
+      bookedDates: "",
     });
   };
 
   useEffect(() => {
     clearFilters();
+    setSearchInput("");
+    setSuggestions([]);
   }, []);
+  const handleSearchInputChange = (event) => {
+    const userInput = event.target.value;
+    setSearchInput(userInput);
 
+    const suggestions = business
+      .filter(
+        (item) =>
+          item.business_name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+      )
+      .map((item) => item.business_name);
+
+    setSuggestions(suggestions);
+    setShowDropdown(suggestions.length > 0);
+  };
   const filteredData = business.filter((item) => {
+    const bookedDates = item.booked_dates || [];
     return (
       (filters.location === "" ||
         item.business_location === filters.location) &&
-        (filters.status === "" ||
-        item.business_status === filters.status) &&
+      (filters.status === "" || item.business_status === filters.status) &&
       (filters.rating === "" || item.rating >= filters.rating) &&
       (filters.minPrice === "" || item.estimated_price >= filters.minPrice) &&
-      (filters.maxPrice === "" || item.estimated_price <= filters.maxPrice)
+      (filters.maxPrice === "" || item.estimated_price <= filters.maxPrice) &&
+      (filters.bookedDates === "" ||
+        !bookedDates.includes(filters.bookedDates)) &&
+      (searchInput === "" ||
+        item.business_name.toLowerCase().includes(searchInput.toLowerCase()))
     );
   });
 
@@ -113,7 +141,7 @@ const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
         <div className="col-3">
           <div
             className="card mx-5 my-5 rounded-4"
-            style={{ width: "300px", height: "950px", maxHeight: "950px" }}
+            style={{ width: "300px", minHeight: "900px" }}
           >
             <div className="container mt-3">
               <div className="d-flex justify-content-between">
@@ -122,6 +150,38 @@ const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
                   Clear All Filters
                 </u>
               </div>
+              <div className="container my-5">
+                <h5>Search</h5>
+                <input
+                  type="text"
+                  className="border-2 border-gray-300 rounded-md px-4 py-2 m-2 w-96"
+                  placeholder={`Search Your Business`}
+                  value={searchInput}
+                  onChange={handleSearchInputChange}
+                />
+                {suggestions.length > 0 && showDropdown && (
+                  <>
+                    <h6 className="mt-2">Suggestions</h6>
+                    <select className="ms-1 mt-2 dropdown-filter">
+                      {suggestions.map((suggestion, index) => (
+                        <option key={index}>{suggestion}</option>
+                      ))}
+                    </select>
+                  </>
+                )}
+                <div className="text-end me-2 mt-2">
+                  <button
+                    className="btn btn-dark"
+                    onClick={() => {
+                      setSearchInput("");
+                      setSuggestions([]);
+                    }}
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              </div>
+              <hr className="divider-filter" />
               <div className="container my-5">
                 <h5 className="">Business Status</h5>
                 <select
@@ -153,6 +213,19 @@ const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
                     </option>
                   ))}
                 </select>
+              </div>
+              <hr className="divider-filter" />
+              <div className="container my-5">
+                <h5>Filter By Available Dates</h5>
+                <input
+                  className="form-control my-2"
+                  id="availability"
+                  type="date"
+                  value={filters.bookedDates}
+                  onChange={(e) =>
+                    handleFilterChange("bookedDates", e.target.value)
+                  }
+                />
               </div>
               <hr className="divider-filter" />
               <div className="container my-5">
@@ -216,7 +289,12 @@ const BusinessLayout = ({ business,showAlert,setDeletedBusiness }) => {
           </div>
         </div>
         <div className="col my-5">
-          <BusinessCards cards={records} showAlert={showAlert} setDeletedBusiness={setDeletedBusiness}/>
+          <BusinessCards
+            cards={records}
+            showAlert={showAlert}
+            setDeletedBusiness={setDeletedBusiness}
+            deletedBusiness={deletedBusiness}
+          />
           {sortedData && (
             <nav>
               <ul className="pagination">

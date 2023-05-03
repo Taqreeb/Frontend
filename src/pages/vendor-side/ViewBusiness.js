@@ -41,7 +41,7 @@ const ViewBusiness = ({showAlert}) => {
   return (
     <>
     {!loading?<div>
-       <BusinessLayout business={business} showAlert={showAlert} setDeletedBusiness={setDeletedBusiness}/>
+       <BusinessLayout business={business} showAlert={showAlert} setDeletedBusiness={setDeletedBusiness} deletedBusiness={deletedBusiness}/>
     </div>: <LoadingScreen/>}
     </>
   )

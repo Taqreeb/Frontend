@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../utils/apiUrl";
 
 const ChangePasswordModal = (props) => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const ChangePasswordModal = (props) => {
       if (newPassword.length >= 8) {
         try {
           await axios.put(
-            `http://localhost:5000/${role}/updatePassword`,
+            `${API_URL}/${role}/updatePassword`,
             { oldPassword: oldPassword, newPassword: newPassword },
             {
               headers: {

@@ -14,7 +14,8 @@ const BusinessApprovals = ({ showAlert }) => {
   const role = localStorage.getItem("role");
   const authtoken = localStorage.getItem("authtoken");
 
-  const modalRef = useRef(null);
+  const approveRef = useRef(null);
+  const rejectRef = useRef(null);
 
   const getApprovedBusiness = async () => {
     setLoading(true);
@@ -52,10 +53,11 @@ const BusinessApprovals = ({ showAlert }) => {
         }
       );
       if (response.data.success) {
-        modalRef.current.setAttribute("data-bs-dismiss", "modal");
-        modalRef.current.click();
+        approveRef.current.setAttribute("data-bs-dismiss", "modal");
+        approveRef.current.click();
+        document.querySelector('.modal-backdrop').remove();
         showAlert("The business has been approved", "success");
-        setStatusClicked(true);
+        setStatusClicked(!statusClicked);
       }
     } catch (error) {
       if (error.response) {
@@ -81,11 +83,12 @@ const BusinessApprovals = ({ showAlert }) => {
         }
       );
       if (response.data.success) {
-        modalRef.current.setAttribute("data-bs-dismiss", "modal");
-        modalRef.current.click();
+        rejectRef.current.setAttribute("data-bs-dismiss", "modal");
+        rejectRef.current.click();
+        document.querySelector('.modal-backdrop').remove();
+        document.querySelector('.modal-open').remove();
         showAlert("The business has been rejected", "danger");
-
-        setStatusClicked(true);
+        setStatusClicked(!statusClicked);
       }
     } catch (error) {
       if (error.response) {
@@ -105,10 +108,9 @@ const BusinessApprovals = ({ showAlert }) => {
         id="acceptStatus"
         tabIndex="-1"
         aria-labelledby="acceptStatusLabel"
-        data-bs-backdrop="static"
         data-bs-keyboard="false"
         aria-hidden="true"
-        ref={modalRef}
+        ref={approveRef}
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -150,10 +152,9 @@ const BusinessApprovals = ({ showAlert }) => {
         id="rejectStatus"
         tabIndex="-1"
         aria-labelledby="rejectStatusLabel"
-        data-bs-backdrop="static"
         data-bs-keyboard="false"
         aria-hidden="true"
-        ref={modalRef}
+        ref={rejectRef}
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -226,7 +227,7 @@ const BusinessApprovals = ({ showAlert }) => {
           <div className="background-top-business-approval">
             <div className="container pt-4">
               <h1>Business Approvals</h1>
-              <p className="ms-3">
+              <p className="ms-3 ">
                 Accept or reject the following pending businesses
               </p>
             </div>
@@ -328,7 +329,7 @@ const BusinessApprovals = ({ showAlert }) => {
               </div>
             </div>
           ) : (
-            <h1>No Pending Businesses to show</h1>
+            <h1 className="text-center" style={{marginTop:"20vh"}}>No Pending Businesses to show</h1>
           )}
         </>
       ) : (

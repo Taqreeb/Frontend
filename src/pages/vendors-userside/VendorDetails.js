@@ -226,7 +226,7 @@ const VendorDetails = ({ showAlert }) => {
   }, [submitReview]);
   return (
     <>
-      {!loading &&!loadingGetRatingReviews&&!loadingGetReviews? (
+      {!loading && !loadingGetRatingReviews && !loadingGetReviews ? (
         <div className="overflow-x-hidden overflow-y-hidden">
           <div className="background-top-specific-vendor">
             <div className="row pt-3">
@@ -328,7 +328,12 @@ const VendorDetails = ({ showAlert }) => {
                           element="i"
                           number={card.business_phone_number}
                         >
-                          <i className="fs-5 text-success" style={{cursor:"pointer"}}>{whatsappIcon}</i>
+                          <i
+                            className="fs-5 text-success"
+                            style={{ cursor: "pointer" }}
+                          >
+                            {whatsappIcon}
+                          </i>
                         </WhatsappChat>
                       </div>
                     </div>
@@ -344,6 +349,9 @@ const VendorDetails = ({ showAlert }) => {
                       <p className="text-secondary fs-5">Packages</p>
                       <SlickSliderPackages
                         vendorPackages={card.business_packages}
+                        businessName={card.business_name}
+                        vendorType={card.business_type}
+                        vendorId={card._id}
                       />
                     </div>
                   ) : (
@@ -414,7 +422,7 @@ const VendorDetails = ({ showAlert }) => {
                 <div className="d-flex justify-content-center align-items-center text-center">
                   <div className="mx-4 my-3">
                     <StarRating star={rating} type="VendorReviews" />
-                    <span className="my-2 fs-5">{(rating.toFixed(1))}/5.0</span>
+                    <span className="my-2 fs-5">{rating.toFixed(1)}/5.0</span>
                     <br />
                     <span className="fs-5">{numOfReviews} reviews</span>
                   </div>
@@ -433,6 +441,7 @@ const VendorDetails = ({ showAlert }) => {
                     business_id={businessId}
                     showAlert={showAlert}
                     setSubmitReview={setSubmitReview}
+                    submitReview={submitReview}
                   />
                 </div>
                 <hr />

@@ -17,7 +17,9 @@ const CategoryLayout = ({ business, description, vendorType }) => {
   const title = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
   const locations = business.filter(
     (card, index) =>
-      business.findIndex((l) => l.business_location === card.business_location) === index,
+      business.findIndex(
+        (l) => l.business_location === card.business_location
+      ) === index
   );
 
   const [filters, setFilters] = useState({
@@ -26,11 +28,15 @@ const CategoryLayout = ({ business, description, vendorType }) => {
     rating: "",
     minPrice: "",
     maxPrice: "",
+    bookedDates: "",
   });
-
+  const [searchInput, setSearchInput] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
   const ratings = [1, 2, 3, 4, 5];
 
   const handleFilterChange = (filter, value) => {
+    console.log(suggestions);
     setFilters((prevState) => ({
       ...prevState,
       [filter]: value,
@@ -44,19 +50,42 @@ const CategoryLayout = ({ business, description, vendorType }) => {
       rating: "",
       minPrice: "",
       maxPrice: "",
+      bookedDates: "",
     });
   };
 
   useEffect(() => {
     clearFilters();
+    setSearchInput("")
+    setSuggestions([])
   }, [vendorType]);
+  const handleSearchInputChange = (event) => {
+ 
+    const userInput = event.target.value;
+    setSearchInput(userInput);
+    
+    const suggestions = business
+      .filter(
+        (item) =>
+          item.business_name.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+      )
+      .map((item) => item.business_name);
 
+    setSuggestions(suggestions);
+    setShowDropdown(suggestions.length > 0);
+  };
   const filteredData = business.filter((item) => {
+    const bookedDates = item.booked_dates || [];
     return (
-      (filters.location === "" || item.business_location === filters.location) &&
+      (filters.location === "" ||
+        item.business_location === filters.location) &&
       (filters.rating === "" || item.rating >= filters.rating) &&
       (filters.minPrice === "" || item.estimated_price >= filters.minPrice) &&
-      (filters.maxPrice === "" || item.estimated_price <= filters.maxPrice)
+      (filters.maxPrice === "" || item.estimated_price <= filters.maxPrice) &&
+      (filters.bookedDates === "" ||
+        !bookedDates.includes(filters.bookedDates)) &&
+      (searchInput === "" ||
+        item.business_name.toLowerCase().includes(searchInput.toLowerCase()))
     );
   });
 
@@ -128,7 +157,7 @@ const CategoryLayout = ({ business, description, vendorType }) => {
         <div className="col-3">
           <div
             className="card mx-5 my-5 rounded-4"
-            style={{ width: "300px", height: "800px", maxHeight: "800px" }}
+            style={{ width: "300px", minHeight: "900px" }}
           >
             <div className="container mt-3">
               <div className="d-flex justify-content-between">
@@ -137,6 +166,40 @@ const CategoryLayout = ({ business, description, vendorType }) => {
                   Clear All Filters
                 </u>
               </div>
+              <div className="container my-5">
+                <h5>Search</h5>
+                <input
+                  type="text"
+                  className="border-2 border-gray-300 rounded-md px-4 py-2 m-2 w-96"
+                  placeholder={`Search for ${title}s`}
+                  value={searchInput}
+                  onChange={handleSearchInputChange}
+                />
+                {suggestions.length > 0 && (
+                   showDropdown && (
+                    <>
+                    <h6 className="mt-2">Suggestions</h6>
+                    <select className="ms-1 mt-2 dropdown-filter">
+                      {suggestions.map((suggestion, index) => (
+                        <option key={index}>{suggestion}</option>
+                      ))}
+                    </select>
+                    </>
+                  )
+                )}
+                <div className="text-end me-2 mt-2">
+                  <button
+                    className="btn btn-dark"
+                    onClick={() => {
+                      setSearchInput("");
+                      setSuggestions([]);
+                    }}
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              </div>
+              <hr className="divider-filter" />
               <div className="container my-5">
                 <h5>Location</h5>
                 <select
@@ -153,6 +216,19 @@ const CategoryLayout = ({ business, description, vendorType }) => {
                     </option>
                   ))}
                 </select>
+              </div>
+              <hr className="divider-filter" />
+              <div className="container my-5">
+                <h5>Filter By Available Dates</h5>
+                <input
+                  className="form-control my-2"
+                  id="availability"
+                  type="date"
+                  value={filters.bookedDates}
+                  onChange={(e) =>
+                    handleFilterChange("bookedDates", e.target.value)
+                  }
+                />
               </div>
               <hr className="divider-filter" />
               <div className="container my-5">

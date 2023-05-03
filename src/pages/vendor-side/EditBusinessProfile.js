@@ -15,6 +15,7 @@ const EditBusinessProfile = (props) => {
   const [loading, setLoading] = useState(false);
   const [saveButton, setSaveButton] = useState(false);
   const [businesstype, setBusinessType] = useState("");
+  const [click, setClick] = useState(false);
 
   //values
   const [businessEmail, setBusinessEmail] = useState("");
@@ -32,6 +33,13 @@ const EditBusinessProfile = (props) => {
   const [venuePersonsCapacity, setVenuePersonsCapacity] = useState();
   const [venueCoverageArea, setVenueCoverageArea] = useState();
   const [packages, setPackages] = useState([]);
+  const [silverPackagePrice, setSilverPackagePrice] = useState();
+  const [goldPackagePrice, setGoldPackagePrice] = useState();
+  const [platinumPackagePrice, setPlatinumPackagePrice] = useState();
+  const [silverPackageDescription, setSilverPackageDescription] = useState();
+  const [goldPackageDescription, setGoldPackageDescription] = useState();
+  const [platinumPackageDescription, setPlatinumPackageDescription] =
+    useState();
 
   //Errors
   const [businessEmailError, setBusinessEmailError] = useState("");
@@ -46,6 +54,7 @@ const EditBusinessProfile = (props) => {
   const [venuePersonsCapacityError, setVenuePersonsCapacityError] =
     useState("");
   const [venueCoverageAreaError, setVenueCoverageAreaError] = useState("");
+  const [packageError, setPackageError] = useState("");
 
   //Editing
   const [isEditingbusinessName, setIsEditingBusinessName] = useState(false);
@@ -71,9 +80,14 @@ const EditBusinessProfile = (props) => {
     useState(false);
   const [isEditingVenueCoverageArea, setIsEditingVenueCoverageArea] =
     useState(false);
+  const [isEditingSilverPackage, setIsEditingSilverPackage] = useState(false);
+  const [isEditingGoldPackage, setIsEditingGoldPackage] = useState(false);
+  const [isEditingPlatinumPackage, setIsEditingPlatinumPackage] =
+    useState(false);
 
   const handleSaveChangesBusinessName = async () => {
     if (businessName) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessName/${businessId}`,
@@ -88,10 +102,12 @@ const EditBusinessProfile = (props) => {
         if (response.data.success) {
           setBusinessNameError("");
           props.showAlert("Business Name Changed Successfully", "success");
+          setClick(false);
           setIsEditingBusinessName(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -107,6 +123,7 @@ const EditBusinessProfile = (props) => {
 
   const handleSaveChangesBusinessDescription = async () => {
     if (businessDescription) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessDescription/${businessId}`,
@@ -124,10 +141,12 @@ const EditBusinessProfile = (props) => {
             "Business Description Changed Successfully",
             "success"
           );
+          setClick(false);
           setIsEditingBusinessDescription(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -144,6 +163,7 @@ const EditBusinessProfile = (props) => {
   const handleSaveChangesBusinessPhone = async () => {
     if (businessPhone) {
       if (validPhoneNo.test(businessPhone)) {
+        setClick(true);
         try {
           const response = await axios.put(
             `${API_URL}/${role}/businessPhone/${businessId}`,
@@ -157,13 +177,13 @@ const EditBusinessProfile = (props) => {
           );
           if (response.data.success) {
             setBusinessPhoneError("");
-
             props.showAlert("Phone Number Changed Successfully", "success");
-
+            setClick(false);
             setIsEditingBusinessPhone(false);
-            setSaveButton(true);
+            setSaveButton(!saveButton);
           }
         } catch (error) {
+          setClick(false);
           if (error.response) {
             console.log(error.response);
           } else if (error.request) {
@@ -184,6 +204,7 @@ const EditBusinessProfile = (props) => {
 
   const handleSaveChangesBusinessEmail = async () => {
     if (businessEmail) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessEmail/${businessId}`,
@@ -199,11 +220,12 @@ const EditBusinessProfile = (props) => {
           setBusinessEmailError("");
 
           props.showAlert("Email Changed Successfully", "success");
-
+          setClick(false);
           setIsEditingBusinessEmail(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -218,6 +240,7 @@ const EditBusinessProfile = (props) => {
   };
   const handleSaveChangesBusinessLocation = async () => {
     if (businessLocation) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessLocation/${businessId}`,
@@ -233,11 +256,12 @@ const EditBusinessProfile = (props) => {
           setBusinessLocationError("");
 
           props.showAlert("Business Location Changed Successfully", "success");
-
+          setClick(false);
           setIsEditingBusinessLocation(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -253,6 +277,7 @@ const EditBusinessProfile = (props) => {
 
   const handleSaveChangesBusinessAddress = async () => {
     if (businessAddress) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessAddress/${businessId}`,
@@ -267,10 +292,12 @@ const EditBusinessProfile = (props) => {
         if (response.data.success) {
           setBusinessAddressError("");
           props.showAlert("Business Address Changed Successfully", "success");
+          setClick(false);
           setIsEditingBusinessAddress(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -286,6 +313,7 @@ const EditBusinessProfile = (props) => {
 
   const handleSaveChangesBusinessEstimatedPrice = async () => {
     if (businessEstimatedPrice) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessPrice/${businessId}`,
@@ -299,11 +327,13 @@ const EditBusinessProfile = (props) => {
         );
         if (response.data.success) {
           setBusinessEstimatedPriceError("");
+          setClick(false);
           props.showAlert("Business Price Changed Successfully", "success");
           setIsEditingBusinessEstimatedPrice(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -318,8 +348,8 @@ const EditBusinessProfile = (props) => {
   };
 
   const handleSaveChangesBusinessBookedDates = async () => {
-    console.log(businessBookedDates);
     if (businessBookedDates.length > 0) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessBookedDates/${businessId}`,
@@ -334,10 +364,12 @@ const EditBusinessProfile = (props) => {
         if (response.data.success) {
           setBusinessBookedDatesError("");
           props.showAlert("Booked Dates Changed Successfully", "success");
+          setClick(false);
           setIsEditingBusinessBookedDates(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -352,6 +384,7 @@ const EditBusinessProfile = (props) => {
   };
 
   const handleSaveChangesFacebook = async () => {
+    setClick(true);
     try {
       const response = await axios.put(
         `${API_URL}/${role}/businessFacebook/${businessId}`,
@@ -368,10 +401,12 @@ const EditBusinessProfile = (props) => {
           "Business Facebook Url Changed Successfully",
           "success"
         );
+        setClick(false);
         setIsEditingBusinessFacebookUrl(false);
-        setSaveButton(true);
+        setSaveButton(!saveButton);
       }
     } catch (error) {
+      setClick(false);
       if (error.response) {
         console.log(error.response);
       } else if (error.request) {
@@ -383,6 +418,7 @@ const EditBusinessProfile = (props) => {
   };
 
   const handleSaveChangesYoutube = async () => {
+    setClick(true);
     try {
       const response = await axios.put(
         `${API_URL}/${role}/businessYoutube/${businessId}`,
@@ -397,10 +433,12 @@ const EditBusinessProfile = (props) => {
       console.log(response.data);
       if (response.data.success) {
         props.showAlert("Business Youtube Url Changed Successfully", "success");
+        setClick(false);
         setIsEditingBusinessYoutubeUrl(false);
-        setSaveButton(true);
+        setSaveButton(!saveButton);
       }
     } catch (error) {
+      setClick(false);
       if (error.response) {
         console.log(error.response);
       } else if (error.request) {
@@ -412,6 +450,7 @@ const EditBusinessProfile = (props) => {
   };
 
   const handleSaveChangesInstagram = async () => {
+    setClick(true);
     try {
       const response = await axios.put(
         `${API_URL}/${role}/businessInstagram/${businessId}`,
@@ -428,10 +467,12 @@ const EditBusinessProfile = (props) => {
           "Business Instagram Url Changed Successfully",
           "success"
         );
+        setClick(false);
         setIsEditingBusinessInstagramUrl(false);
-        setSaveButton(true);
+        setSaveButton(!saveButton);
       }
     } catch (error) {
+      setClick(false);
       if (error.response) {
         console.log(error.response);
       } else if (error.request) {
@@ -444,6 +485,7 @@ const EditBusinessProfile = (props) => {
 
   const handleSaveChangesVenuePersonsCapacity = async () => {
     if (venuePersonsCapacity) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessCapacity/${businessId}`,
@@ -461,10 +503,12 @@ const EditBusinessProfile = (props) => {
             "Venue Persons Capacity Changed Successfully",
             "success"
           );
+          setClick(false);
           setIsEditingVenuePersonsCapacity(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -479,6 +523,7 @@ const EditBusinessProfile = (props) => {
   };
   const handleSaveChangesVenueCoverageArea = async () => {
     if (venueCoverageArea) {
+      setClick(true);
       try {
         const response = await axios.put(
           `${API_URL}/${role}/businessCoverageArea/${businessId}`,
@@ -493,10 +538,12 @@ const EditBusinessProfile = (props) => {
         if (response.data.success) {
           setVenueCoverageAreaError("");
           props.showAlert("Venue Coverage Area Successfully", "success");
+          setClick(false);
           setIsEditingVenueCoverageArea(false);
-          setSaveButton(true);
+          setSaveButton(!saveButton);
         }
       } catch (error) {
+        setClick(false);
         if (error.response) {
           console.log(error.response);
         } else if (error.request) {
@@ -507,6 +554,56 @@ const EditBusinessProfile = (props) => {
       }
     } else {
       setVenueCoverageAreaError("Coverage Area is required");
+    }
+  };
+
+  const handleSavePackage = async (id, price, description, name) => {
+    if (description) {
+      if (!price) {
+        setPackageError(`${name} price is required with its description`);
+        return;
+      }
+    }
+    if (price) {
+      if (!description) {
+        setPackageError(`${name} description is required with its price`);
+        return;
+      }
+    }
+    setClick(true);
+    try {
+      const response = await axios.put(
+        `${API_URL}/${role}/businessPackages/${businessId}`,
+        {
+          package_id: id,
+          description: description,
+          price: price,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": authtoken,
+          },
+        }
+      );
+      if (response.data.success) {
+        setPackageError("");
+        setClick(false);
+        setIsEditingSilverPackage(false);
+        setIsEditingGoldPackage(false);
+        setIsEditingPlatinumPackage(false);
+        props.showAlert(`${name} Successfully Changed`, "success");
+        setSaveButton(!saveButton);
+      }
+    } catch (error) {
+      setClick(false);
+      if (error.response) {
+        console.log(error.response);
+      } else if (error.request) {
+        console.log("network error");
+      } else {
+        console.log(error);
+      }
     }
   };
 
@@ -539,6 +636,22 @@ const EditBusinessProfile = (props) => {
         setVenueCoverageArea(response.data.business.venue_coverage_area);
         setVenuePersonsCapacity(response.data.business.venue_persons_capacity);
         setPackages(response.data.business.business_packages);
+        setSilverPackagePrice(
+          response.data.business.business_packages[0].price
+        );
+        setGoldPackagePrice(response.data.business.business_packages[1].price);
+        setPlatinumPackagePrice(
+          response.data.business.business_packages[2].price
+        );
+        setSilverPackageDescription(
+          response.data.business.business_packages[0].description
+        );
+        setGoldPackageDescription(
+          response.data.business.business_packages[1].description
+        );
+        setPlatinumPackageDescription(
+          response.data.business.business_packages[2].description
+        );
         setLoading(false);
       }
     } catch (error) {
@@ -555,6 +668,7 @@ const EditBusinessProfile = (props) => {
   useEffect(() => {
     getBusinessProfile();
   }, [saveButton]);
+
   return (
     <>
       <div className="background-profile-top">
@@ -564,7 +678,7 @@ const EditBusinessProfile = (props) => {
         </div>
       </div>
       {!loading ? (
-        <div className="background-business-profile pt-5">
+        <div className="background-business-profile py-5">
           <div>
             <MyImagePickerBusiness
               displayPicture={displayPicture}
@@ -598,18 +712,24 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessName(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessName}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessName(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessName}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   {businessNameError && (
                     <span className="text-danger">{businessNameError}</span>
@@ -654,18 +774,24 @@ const EditBusinessProfile = (props) => {
                     required
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessDescription(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessDescription}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessDescription(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessDescription}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   {businessDescriptionError && (
                     <span className="text-danger">
@@ -709,18 +835,24 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessPhone(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessPhone}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessPhone(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessPhone}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   {businessphoneError && (
                     <span className="text-danger">{businessphoneError}</span>
@@ -762,18 +894,24 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessEmail(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessEmail}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessEmail(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessEmail}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   {businessEmailError && (
                     <span className="text-danger">{businessEmailError}</span>
@@ -821,18 +959,24 @@ const EditBusinessProfile = (props) => {
                     </select>
                   </label>
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessLocation(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessLocation}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessLocation(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessLocation}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   <div>
                     {businessLocationError && (
@@ -879,18 +1023,24 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessAddress(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessAddress}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessAddress(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessAddress}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   {businessAddressError && (
                     <span className="text-danger">{businessAddressError}</span>
@@ -934,18 +1084,26 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessEstimatedPrice(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessEstimatedPrice}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() =>
+                            setIsEditingBusinessEstimatedPrice(false)
+                          }
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessEstimatedPrice}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   {businessEstimatedPriceError && (
                     <span className="text-danger">
@@ -956,8 +1114,8 @@ const EditBusinessProfile = (props) => {
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
                   <div>
-                    <span>Business Estimated Price: (in PKR) </span>
-                    <span>{businessEstimatedPrice}</span>
+                    <span>Business Estimated Price: </span>
+                    <span>{businessEstimatedPrice} PKR</span>
                   </div>
                   <div>
                     <button
@@ -997,18 +1155,24 @@ const EditBusinessProfile = (props) => {
                     format="YYYY-MM-DD"
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessBookedDates(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesBusinessBookedDates}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessBookedDates(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesBusinessBookedDates}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                   {businessBookedDatesError && (
                     <span className="text-danger">
@@ -1019,13 +1183,15 @@ const EditBusinessProfile = (props) => {
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
                   <div>
-                    <span>Booked Dates: </span>
-                    {businessBookedDates.map((date, index) => (
-                      <span key={index}>
-                        {date}
-                        {index === businessBookedDates.length - 1 ? "" : ", "}
-                      </span>
-                    ))}
+                    <select
+                      className="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected>Booked Dates</option>
+                      {businessBookedDates.map((date, index) => (
+                        <option key={index}>{date}</option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <button
@@ -1058,18 +1224,24 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessFacebookUrl(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesFacebook}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessFacebookUrl(false)}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesFacebook}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -1108,19 +1280,25 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessYoutubeUrl(false)}
-                    >
-                      Cancel
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() => setIsEditingBusinessYoutubeUrl(false)}
+                        >
+                          Cancel
+                        </button>
 
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesYoutube}
-                    >
-                      Save Changes
-                    </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesYoutube}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -1160,18 +1338,26 @@ const EditBusinessProfile = (props) => {
                     }}
                   />
                   <div className="container mt-2 ms-3 text-end">
-                    <button
-                      className="btn btn-danger me-3"
-                      onClick={() => setIsEditingBusinessInstagramUrl(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="btn btn-success "
-                      onClick={handleSaveChangesInstagram}
-                    >
-                      Save Changes
-                    </button>
+                    {!click ? (
+                      <>
+                        <button
+                          className="btn btn-danger me-3"
+                          onClick={() =>
+                            setIsEditingBusinessInstagramUrl(false)
+                          }
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="btn btn-success "
+                          onClick={handleSaveChangesInstagram}
+                        >
+                          Save Changes
+                        </button>
+                      </>
+                    ) : (
+                      <p>Saving...</p>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -1216,20 +1402,26 @@ const EditBusinessProfile = (props) => {
                         }}
                       />
                       <div className="container mt-2 ms-3 text-end">
-                        <button
-                          className="btn btn-danger me-3"
-                          onClick={() =>
-                            setIsEditingVenuePersonsCapacity(false)
-                          }
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          className="btn btn-success "
-                          onClick={handleSaveChangesVenuePersonsCapacity}
-                        >
-                          Save Changes
-                        </button>
+                        {!click ? (
+                          <>
+                            <button
+                              className="btn btn-danger me-3"
+                              onClick={() =>
+                                setIsEditingVenuePersonsCapacity(false)
+                              }
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="btn btn-success "
+                              onClick={handleSaveChangesVenuePersonsCapacity}
+                            >
+                              Save Changes
+                            </button>
+                          </>
+                        ) : (
+                          <p>Saving...</p>
+                        )}
                       </div>
                       {venuePersonsCapacityError && (
                         <span className="text-danger">
@@ -1278,18 +1470,26 @@ const EditBusinessProfile = (props) => {
                         }}
                       />
                       <div className="container mt-2 ms-3 text-end">
-                        <button
-                          className="btn btn-danger me-3"
-                          onClick={() => setIsEditingVenueCoverageArea(false)}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          className="btn btn-success "
-                          onClick={handleSaveChangesVenueCoverageArea}
-                        >
-                          Save Changes
-                        </button>
+                        {!click ? (
+                          <>
+                            <button
+                              className="btn btn-danger me-3"
+                              onClick={() =>
+                                setIsEditingVenueCoverageArea(false)
+                              }
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              className="btn btn-success "
+                              onClick={handleSaveChangesVenueCoverageArea}
+                            >
+                              Save Changes
+                            </button>
+                          </>
+                        ) : (
+                          <p>Saving...</p>
+                        )}
                       </div>
                       {venueCoverageAreaError && (
                         <span className="text-danger">
@@ -1316,6 +1516,317 @@ const EditBusinessProfile = (props) => {
                 </div>
               </>
             )}
+
+            {packages.map((pkg) => (
+              <div className="mt-3" key={pkg._id}>
+                {pkg.name === "Silver Package" ? (
+                  <>
+                    <div className="mt-3">
+                      {isEditingSilverPackage ? (
+                        <div>
+                          <div className="container text-start mb-2">
+                            <label
+                              htmlFor="silverPackagePrice"
+                              className="form-label"
+                            >
+                              Silver Package Price:{" "}
+                            </label>
+                          </div>
+                          <input
+                            type="number"
+                            id="silverPackagePrice"
+                            min="0"
+                            className="form-control"
+                            value={silverPackagePrice}
+                            onChange={(e) =>
+                              setSilverPackagePrice(e.target.value)
+                            }
+                          />
+                          <div className="container text-start my-2">
+                            <label
+                              htmlFor="silverPackageDescription"
+                              className="form-label"
+                            >
+                              Silver Package Description:{" "}
+                            </label>
+                          </div>
+                          <textarea
+                            rows="3"
+                            style={{ resize: "none" }}
+                            type="text"
+                            id="silverPackageDescription"
+                            className="form-control"
+                            value={silverPackageDescription}
+                            onChange={(e) =>
+                              setSilverPackageDescription(e.target.value)
+                            }
+                          />
+                          <div className="text-start mt-2">
+                            {packageError && (
+                              <span className="text-danger">
+                                {packageError}
+                              </span>
+                            )}
+                          </div>
+                          <div className="container mt-2 ms-3 text-end">
+                            {!click ? (
+                              <>
+                                <button
+                                  className="btn btn-danger me-3"
+                                  onClick={() =>
+                                    setIsEditingSilverPackage(false)
+                                  }
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className="btn btn-success "
+                                  onClick={() =>
+                                    handleSavePackage(
+                                      pkg._id,
+                                      silverPackagePrice,
+                                      silverPackageDescription,
+                                      pkg.name
+                                    )
+                                  }
+                                >
+                                  Save Changes
+                                </button>
+                              </>
+                            ) : (
+                              <p>Saving...</p>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mt-5 d-flex justify-content-between">
+                          <div className="text-start" style={{ width: "70%" }}>
+                            <h5>Silver Package</h5>
+                            <span>Silver Package Description: </span>
+                            <span>{silverPackageDescription}</span>
+                            <br />
+                            <br />
+                            <span>Silver Package Price: </span>
+                            <span>{silverPackagePrice} PKR</span>
+                          </div>
+                          <div>
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => setIsEditingSilverPackage(true)}
+                            >
+                              Change Silver Package
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : pkg.name === "Gold Package" ? (
+                  <>
+                    <div className="mt-3">
+                      {isEditingGoldPackage ? (
+                        <div>
+                          <div className="container text-start mb-2">
+                            <label
+                              htmlFor="goldPackagePrice"
+                              className="form-label"
+                            >
+                              Gold Package Price:{" "}
+                            </label>
+                          </div>
+                          <input
+                            type="number"
+                            id="goldPackagePrice"
+                            min="0"
+                            className="form-control"
+                            value={goldPackagePrice}
+                            onChange={(e) =>
+                              setGoldPackagePrice(e.target.value)
+                            }
+                          />
+                          <div className="container text-start my-2">
+                            <label
+                              htmlFor="goldPackageDescription"
+                              className="form-label"
+                            >
+                              Gold Package Description:{" "}
+                            </label>
+                          </div>
+                          <textarea
+                            rows="3"
+                            style={{ resize: "none" }}
+                            type="text"
+                            id="goldPackageDescription"
+                            className="form-control"
+                            value={goldPackageDescription}
+                            onChange={(e) =>
+                              setGoldPackageDescription(e.target.value)
+                            }
+                          />
+                          <div className="text-start mt-2">
+                            {packageError && (
+                              <span className="text-danger">
+                                {packageError}
+                              </span>
+                            )}
+                          </div>
+                          <div className="container mt-2 ms-3 text-end">
+                            {!click ? (
+                              <>
+                                <button
+                                  className="btn btn-danger me-3"
+                                  onClick={() => setIsEditingGoldPackage(false)}
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className="btn btn-success "
+                                  onClick={() =>
+                                    handleSavePackage(
+                                      pkg._id,
+                                      goldPackagePrice,
+                                      goldPackageDescription,
+                                      pkg.name
+                                    )
+                                  }
+                                >
+                                  Save Changes
+                                </button>
+                              </>
+                            ) : (
+                              <p>Saving...</p>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mt-5 d-flex justify-content-between">
+                          <div className="text-start" style={{ width: "70%" }}>
+                            <h5>Gold Package</h5>
+                            <span>Gold Package Description: </span>
+                            <span>{goldPackageDescription}</span>
+                            <br />
+                            <br />
+                            <span>Gold Package Price: </span>
+                            <span>{goldPackagePrice} PKR</span>
+                          </div>
+                          <div>
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => setIsEditingGoldPackage(true)}
+                            >
+                              Change Gold Package
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="mt-3">
+                      {isEditingPlatinumPackage ? (
+                        <div>
+                          <div className="container text-start mb-2">
+                            <label
+                              htmlFor="platinumPackagePrice"
+                              className="form-label"
+                            >
+                              Platinum Package Price:{" "}
+                            </label>
+                          </div>
+                          <input
+                            type="number"
+                            id="platinumPackagePrice"
+                            min="0"
+                            className="form-control"
+                            value={platinumPackagePrice}
+                            onChange={(e) =>
+                              setPlatinumPackagePrice(e.target.value)
+                            }
+                          />
+                          <div className="container text-start my-2">
+                            <label
+                              htmlFor="platinumPackageDescription"
+                              className="form-label"
+                            >
+                              Platinum Package Description:{" "}
+                            </label>
+                          </div>
+                          <textarea
+                            rows="3"
+                            style={{ resize: "none" }}
+                            type="text"
+                            id="platinumPackageDescription"
+                            className="form-control"
+                            value={platinumPackageDescription}
+                            onChange={(e) =>
+                              setPlatinumPackageDescription(e.target.value)
+                            }
+                          />
+                          <div className="text-start mt-2">
+                            {packageError && (
+                              <span className="text-danger">
+                                {packageError}
+                              </span>
+                            )}
+                          </div>
+                          <div className="container mt-2 ms-3 text-end">
+                            {!click ? (
+                              <>
+                                {" "}
+                                <button
+                                  className="btn btn-danger me-3"
+                                  onClick={() =>
+                                    setIsEditingPlatinumPackage(false)
+                                  }
+                                >
+                                  Cancel
+                                </button>
+                                <button
+                                  className="btn btn-success "
+                                  onClick={() =>
+                                    handleSavePackage(
+                                      pkg._id,
+                                      platinumPackagePrice,
+                                      platinumPackageDescription,
+                                      pkg.name
+                                    )
+                                  }
+                                >
+                                  Save Changes
+                                </button>
+                              </>
+                            ) : (
+                              <p>Saving...</p>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mt-5 d-flex justify-content-between">
+                          <div className="text-start" style={{ width: "70%" }}>
+                            <h5>Platinum Package</h5>
+                            <span>Platinum Package Description: </span>
+                            <span>{platinumPackageDescription}</span>
+                            <br />
+                            <br />
+                            <span>Platinum Package Price: </span>
+                            <span>{platinumPackagePrice} PKR</span>
+                          </div>
+                          <div>
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => setIsEditingPlatinumPackage(true)}
+                            >
+                              Change Platinum Package
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       ) : (

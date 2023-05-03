@@ -8,7 +8,12 @@ import axios from "axios";
 const editButton = <FaEdit />;
 const deleteButton = <FaTrashAlt />;
 const mapMarker = <FaMapMarkerAlt />;
-const BusinessCards = ({ cards, showAlert, setDeletedBusiness }) => {
+const BusinessCards = ({
+  cards,
+  showAlert,
+  setDeletedBusiness,
+  deletedBusiness,
+}) => {
   const modalRef = useRef(null);
   const role = localStorage.getItem("role");
   const authtoken = localStorage.getItem("authtoken");
@@ -25,10 +30,12 @@ const BusinessCards = ({ cards, showAlert, setDeletedBusiness }) => {
         }
       );
       if (response.data.success) {
+        
         modalRef.current.setAttribute("data-bs-dismiss", "modal");
         modalRef.current.click();
+        document.querySelector('.modal-backdrop').remove();
         showAlert("You have deleted your business succesfully", "success");
-        setDeletedBusiness(true);
+        setDeletedBusiness(!deletedBusiness);
       }
     } catch (error) {
       if (error.response) {
@@ -48,7 +55,6 @@ const BusinessCards = ({ cards, showAlert, setDeletedBusiness }) => {
         id="deleteBusiness"
         tabIndex="-1"
         aria-labelledby="deleteBusinessLabel"
-        data-bs-backdrop="static"
         data-bs-keyboard="false"
         aria-hidden="true"
         ref={modalRef}
@@ -73,7 +79,6 @@ const BusinessCards = ({ cards, showAlert, setDeletedBusiness }) => {
               </button>
               <button
                 type="button"
-                id="button"
                 className="btn btn-dark"
                 onClick={() => handleDeleteBusiness(id)}
               >
@@ -96,16 +101,19 @@ const BusinessCards = ({ cards, showAlert, setDeletedBusiness }) => {
                 <div className="card" style={{ width: "20rem" }}>
                   <div className="d-flex justify-content-end mx-3">
                     <DeleteBusinessPopup id={card._id} />
-                    {card.business_status!=='rejected' &&
-                    <NavLink to={`/vendor/viewbusiness/edit/${card._id}`} className="nav-link">
-                    <i
-                      className="text-primary fs-6 mx-3"
-                      style={{ cursor: "pointer" }}
-                    >
-                      {editButton}
-                    </i>
-                    </NavLink>
-                    }
+                    {card.business_status !== "rejected" && (
+                      <NavLink
+                        to={`/vendor/viewbusiness/edit/${card._id}`}
+                        className="nav-link"
+                      >
+                        <i
+                          className="text-primary fs-6 mx-3"
+                          style={{ cursor: "pointer" }}
+                        >
+                          {editButton}
+                        </i>
+                      </NavLink>
+                    )}
 
                     <i
                       className="text-danger fs-6"

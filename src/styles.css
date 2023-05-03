@@ -26,7 +26,6 @@
 
 .background-business-profile{
   background-color: #eff2f6;
-  height: 300vh;
 }
 
 .background-vendor-cards-overlay {
@@ -289,4 +288,12 @@ input[type="number"]::-webkit-outer-spin-button {
   right: 1rem;
   left: 1rem;
   text-align: center;
+}
+body{
+  overflow-y:scroll !important;
+  padding-right:0 !important;
+}
+.modal-open{
+  overflow-y:scroll !important;
+  padding-right:0 !important;
 }

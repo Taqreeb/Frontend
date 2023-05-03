@@ -2,8 +2,8 @@ import axios from "axios";
 import React, { useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { API_URL } from "../utils/apiUrl";
-import LoadingScreen from "./LoadingScreen";
-const WriteReviewModal = ({business_id,showAlert,setSubmitReview}) => {
+
+const WriteReviewModal = ({business_id,showAlert,setSubmitReview,submitReview}) => {
   const [review, setReview] = useState("");
   const [reviewError, setReviewError] = useState("");
   const [ratingError, setRatingError] = useState("");
@@ -37,7 +37,7 @@ const WriteReviewModal = ({business_id,showAlert,setSubmitReview}) => {
       setRating(null);
       modalRef.current.setAttribute("data-bs-dismiss", "modal"); 
       modalRef.current.click();
-      setSubmitReview(true);
+      setSubmitReview(!submitReview);
       showAlert("Review Added succesfully","success");
       }
       } catch (error) {

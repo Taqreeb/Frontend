@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import defaultImage from '../../img/default_profile.png'
 import { API_URL } from "../../utils/apiUrl";
 const MyImagePickerProfile = (props) => {
-  const {role, authtoken,setSaveButton } = props;
+  const {role, authtoken,setSaveButton,saveButton } = props;
   const profilePicture = localStorage.getItem('profile_picture')
   const [image, setImage] = useState(profilePicture);
   const [isEditPicture, SetIsEditPicture] = useState(false);
@@ -35,7 +35,7 @@ const MyImagePickerProfile = (props) => {
         props.showAlert("Profile Picture Changed Successfully", "success");
         localStorage.setItem("profile_picture",image)
         SetIsEditPicture(false);
-        setSaveButton(true);
+        setSaveButton(!saveButton);
       } catch (error) {
         if (error.response) {
           console.log(error.response);
