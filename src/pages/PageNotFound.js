@@ -1,14 +1,12 @@
-import React from 'react'
+import React from "react";
 
 const PageNotFound = () => {
   return (
-    <>
-    <div>
-    <h1>Error 404 Page not found!</h1>
+    <div className="text-center" style={{marginTop:"30vh"}} >
+      <h1>404 Page Not Found</h1>
+      <p>We're sorry, but the page you requested could not be found.</p>
     </div>
-   
-    </>
-  )
-}
+  );
+};
 
-export default PageNotFound
+export default PageNotFound;
