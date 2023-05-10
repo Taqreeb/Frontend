@@ -82,6 +82,7 @@ const Signup = (props) => {
         props.showAlert(response.data.message, "success");
       }
       } catch (error) {
+        setLoading(false);
         if (error.response) {
           props.showAlert(error.response.data.error, "success");
           console.log(error.response);
