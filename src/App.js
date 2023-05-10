@@ -30,10 +30,15 @@ import EditBusinessProfile from "./pages/vendor-side/EditBusinessProfile";
 import EditBusinessAlbums from "./pages/vendor-side/EditBusinessAlbums";
 import PackagesDetails from "./pages/vendors-userside/PackagesDetails";
 import EditSpecificAlbum from "./pages/vendor-side/EditSpecificAlbum";
+import EmailVerify from "./pages/EmailVerify";
 
 function App() {
-  const isVendor = localStorage.getItem('isLogin')==="true" && localStorage.getItem('role')==="vendor"
-  const isAdmin = localStorage.getItem('isLogin')==="true" && localStorage.getItem('role')==="admin"
+  const isVendor =
+    localStorage.getItem("isLogin") === "true" &&
+    localStorage.getItem("role") === "vendor";
+  const isAdmin =
+    localStorage.getItem("isLogin") === "true" &&
+    localStorage.getItem("role") === "admin";
   const [alert, setAlert] = useState(null);
   const navigate = useNavigate();
   function checkTokenExpiration() {
@@ -97,6 +102,12 @@ function App() {
             path="/login"
             element={<Login showAlert={showAlert} />}
           />
+
+          <Route
+            exact
+            path="/users/:id/verify/:token"
+            element={< EmailVerify />}
+          />
           <Route exact path="/category" element={<VendorPage1 />} />
           <Route exact path="/category/:vendorType" element={<VendorPage2 />} />
           <Route
@@ -109,59 +120,97 @@ function App() {
             path="/category/:vendorType/:vendorName/:vendorId/:albumName/:albumId"
             element={<AlbumDetails />}
           />
-           <Route
+          <Route
             exact
             path="/category/:vendorType/:vendorName/:vendorId/packages"
             element={<PackagesDetails />}
           />
-          
+
           {/* Vendor Side */}
           <Route
             exact
             path="/vendor/addbusiness"
-            element={isVendor?<AddBusiness showAlert={showAlert} />:<NoLogin role={"Vendor"}/>}
+            element={
+              isVendor ? (
+                <AddBusiness showAlert={showAlert} />
+              ) : (
+                <NoLogin role={"Vendor"} />
+              )
+            }
           />
           <Route
             exact
             path="/vendor/viewbusiness"
-            element={isVendor?<ViewBusiness showAlert={showAlert} />:<NoLogin role={"Vendor"}/>}
+            element={
+              isVendor ? (
+                <ViewBusiness showAlert={showAlert} />
+              ) : (
+                <NoLogin role={"Vendor"} />
+              )
+            }
           />
           <Route
             exact
             path="/vendor/viewbusiness/edit/:businessId"
-            element={isVendor?<EditBusiness />:<NoLogin role={"Vendor"}/>}
+            element={isVendor ? <EditBusiness /> : <NoLogin role={"Vendor"} />}
           />
-           <Route
+          <Route
             exact
             path="/vendor/viewbusiness/edit/:businessId/businessProfile"
-            element={isVendor?<EditBusinessProfile showAlert={showAlert} />:<NoLogin role={"Vendor"}/>}
+            element={
+              isVendor ? (
+                <EditBusinessProfile showAlert={showAlert} />
+              ) : (
+                <NoLogin role={"Vendor"} />
+              )
+            }
           />
-           <Route
+          <Route
             exact
             path="/vendor/viewbusiness/edit/:businessId/businessAlbums"
-            element={isVendor?<EditBusinessAlbums showAlert={showAlert}/>:<NoLogin role={"Vendor"}/>}
+            element={
+              isVendor ? (
+                <EditBusinessAlbums showAlert={showAlert} />
+              ) : (
+                <NoLogin role={"Vendor"} />
+              )
+            }
           />
-           <Route
+          <Route
             exact
             path="/vendor/viewbusiness/edit/:businessId/businessAlbums/:albumId"
-            element={isVendor?<EditSpecificAlbum showAlert={showAlert}/>:<NoLogin role={"Vendor"}/>}
+            element={
+              isVendor ? (
+                <EditSpecificAlbum showAlert={showAlert} />
+              ) : (
+                <NoLogin role={"Vendor"} />
+              )
+            }
           />
-           <Route
+          <Route
             exact
             path="/vendor/viewbusiness/edit/businessprofileinfo"
-            element={isVendor?<EditBusiness />:<NoLogin role={"Vendor"}/>}
+            element={isVendor ? <EditBusiness /> : <NoLogin role={"Vendor"} />}
           />
           <Route
             exact
             path="/businessdetails/:vendorType/:vendorName/:vendorId/:businessId"
-            element={isVendor?<BusinessDetails />:<NoLogin role={"Vendor"}/>}
+            element={
+              isVendor ? <BusinessDetails /> : <NoLogin role={"Vendor"} />
+            }
           />
-          
+
           {/* Admin Side */}
           <Route
             exact
             path="/admin/businessapprovals"
-            element={isAdmin?<BusinessApprovals showAlert={showAlert}/>:<NoLogin role={"Admin"}/>}
+            element={
+              isAdmin ? (
+                <BusinessApprovals showAlert={showAlert} />
+              ) : (
+                <NoLogin role={"Admin"} />
+              )
+            }
           />
         </Routes>
         <ScrollToTop />

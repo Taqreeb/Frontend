@@ -14,6 +14,7 @@ const Signup = (props) => {
   const [showModal, setShowModal] = useState(true);
   const [selectedPopupValue, setSelectedPopupValue] = useState("");
   const [popupError, setPopupError] = useState("");
+  const [msg, setMsg] = useState("");
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -78,9 +79,10 @@ const Signup = (props) => {
           }
         );
         if(response.data.success){
-        setLoading(false);
-        props.showAlert("User Registered Successfully", "success");
-        navigate("/");
+        // setLoading(false);
+        // props.showAlert("User Registered Successfully", "success");
+        // navigate("/");
+        setMsg(response.data.message);
       }
       } catch (error) {
         if (error.response) {
@@ -307,6 +309,7 @@ const Signup = (props) => {
           >
             Signup
           </button>:<p className="text-center">Signing up...</p>}
+          {msg && <span className="text-success text-center"> {msg}</span>}
         </form>
         {/* <p className="text-secondary text-center opacity-75 font fontweight-500">
           Or Signup with
