@@ -53,16 +53,6 @@ const Signup = (props) => {
     e.preventDefault();
     if (firstName && lastName && phoneNo && email && password) {
       try {
-        setEmail("");
-        setPassword("");
-        setFirstName("");
-        setLastName("");
-        setPhoneNo("");
-        setEmailError("");
-        setPasswordError("");
-        setFirstNameError("");
-        setLastNameError("");
-        setPhoneError("");
         const response = await axios.post(
           `${API_URL}/auth/signup`,
           {
@@ -78,13 +68,23 @@ const Signup = (props) => {
           }
         );
         if(response.data.success){
+        setEmail("");
+        setPassword("");
+        setFirstName("");
+        setLastName("");
+        setPhoneNo("");
+        setEmailError("");
+        setPasswordError("");
+        setFirstNameError("");
+        setLastNameError("");
+        setPhoneError("");
         setLoading(false);
         props.showAlert(response.data.message, "success");
       }
       } catch (error) {
         setLoading(false);
         if (error.response) {
-          props.showAlert(error.response.data.error, "success");
+          props.showAlert(error.response.data.error, "danger");
           console.log(error.response);
         } else if (error.request) {
           console.log("network error");
