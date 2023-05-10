@@ -63,7 +63,7 @@ const Login = (props) => {
         }
       } catch (error) {
         if (error.response) {
-          props.showAlert("Invalid Credentials", "danger");
+          props.showAlert(error.response.data.message, "danger");
           setLoading(false);
           console.log(error.response);
         } else if (error.request) {
