@@ -30,7 +30,6 @@ const WriteReviewModal = ({business_id,showAlert,setSubmitReview,submitReview}) 
         );
       if(response.data.success){
       setLoading(false)
-      console.log(response.data)
       setReview("");
       setReviewError("");
       setRatingError("");

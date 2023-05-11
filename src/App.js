@@ -31,6 +31,7 @@ import EditBusinessAlbums from "./pages/vendor-side/EditBusinessAlbums";
 import PackagesDetails from "./pages/vendors-userside/PackagesDetails";
 import EditSpecificAlbum from "./pages/vendor-side/EditSpecificAlbum";
 import EmailVerify from "./pages/EmailVerify";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const isVendor =
@@ -107,6 +108,11 @@ function App() {
             exact
             path="/users/:id/verify/:token"
             element={< EmailVerify />}
+          />
+           <Route
+            exact
+            path="/:id/:resetString"
+            element={<ResetPassword showAlert={showAlert}/>}
           />
           <Route exact path="/category" element={<VendorPage1 />} />
           <Route exact path="/category/:vendorType" element={<VendorPage2 />} />
