@@ -32,16 +32,23 @@ const Contact = (props) => {
   const sendEmail = (e) => {
     e.preventDefault();
     if (name && email && message) {
-      emailjs.sendForm(process.env.REACT_APP_SERVICE_ID, process.env.REACT_APP_TEMPLATE_ID, form.current, process.env.REACT_APP_PUBLIC_KEY).then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+      emailjs
+        .sendForm(
+          service_f1c5dqd,
+          template_hw6t9nd,
+          form.current,
+          kwsLQUPo0j59WKFlG
+        )
+        .then(
+          (result) => {
+            console.log(result.text);
+          },
+          (error) => {
+            console.log(error.text);
+          }
+        );
     }
-    props.showAlert("Message successfully sent", "success")
+    props.showAlert("Message successfully sent", "success");
     setName("");
     setEmail("");
 
@@ -101,7 +108,7 @@ const Contact = (props) => {
             </p>
             <p className="d-flex ">
               <i className="fs-6 mx-1">{emailIcon}</i>
-              taqreeb845@gmail.com
+              taqreeb2@gmail.com
             </p>
             <p className="d-flex">
               <i className="fs-6 mx-1 ">{phoneIcon}</i>
