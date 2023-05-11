@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
-import { FaStar } from "react-icons/fa";
 import { API_URL } from "../utils/apiUrl";
 
 const ForgotPasswordModal = () => {
@@ -8,7 +7,6 @@ const ForgotPasswordModal = () => {
   const [emailError, setEmailError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const modalRef = useRef(null);
   const authtoken = localStorage.getItem("authtoken");
 
   const handleSubmit = async (e) => {
@@ -62,7 +60,6 @@ const ForgotPasswordModal = () => {
       data-bs-backdrop="static"
       data-bs-keyboard="false"
       aria-hidden="true"
-      ref={modalRef}
     >
       <div className="modal-dialog">
         <div className="modal-content">
