@@ -34,10 +34,10 @@ const Contact = (props) => {
     if (name && email && message) {
       emailjs
         .sendForm(
-          service_f1c5dqd,
-          template_hw6t9nd,
+          'service_f1c5dqd',
+          'template_hw6t9nd',
           form.current,
-          kwsLQUPo0j59WKFlG
+          'kwsLQUPo0j59WKFlG'
         )
         .then(
           (result) => {
