@@ -139,6 +139,9 @@ const EditSpecificAlbum = ({ showAlert }) => {
 
   const handleDeleteImage = async (imageId) => {
     try {
+      if(albumImages.length===1){
+        return showAlert("Cannot delete image.Album should have atleast one image", "danger");
+      }
       const response = await axios.delete(
         `${API_URL}/${role}/business/${businessId}/albums/${albumId}/images/${imageId}`,
         {
