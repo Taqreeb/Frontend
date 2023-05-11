@@ -3,7 +3,8 @@ import axios from "axios";
 import "../styles.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
-import {API_URL} from "../utils/apiUrl";
+import { API_URL } from "../utils/apiUrl";
+import ForgotPasswordModal from "../components/ForgotPasswordModal";
 const eye = <FaEye />;
 const eyeSlash = <FaEyeSlash />;
 
@@ -12,7 +13,7 @@ const Login = (props) => {
   const [eyeShown, seteyeShown] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleEmailChange = (event) => {
     event.preventDefault();
@@ -44,7 +45,7 @@ const Login = (props) => {
             headers: { "Content-Type": "application/json" },
           }
         );
-        
+
         if (response.data.authtoken) {
           setEmail("");
           setPassword("");
@@ -59,7 +60,7 @@ const Login = (props) => {
           );
           navigate("/");
           props.showAlert("Logged in Successfully", "success");
-          setLoading(false)
+          setLoading(false);
         }
       } catch (error) {
         if (error.response) {
@@ -97,8 +98,10 @@ const Login = (props) => {
               required
             />
           </div>
+          <ForgotPasswordModal />
           <NavLink
-            to="/"
+            data-bs-toggle="modal"
+            data-bs-target="#forgotPasswordModal"
             className="text-decoration-none text float-end opacity-75 font fontweight-700"
           >
             Forgot Password?
@@ -127,32 +130,17 @@ const Login = (props) => {
             </i>
           </div>
 
-          {!loading ?<button
-            type="submit"
-            className="btn btn-primary rounded-4 bg-black border-0 my-2 w-100 font fontweight-600"
-          >
-            Login
-          </button>:<p className="text-center">Logging in...</p>}
+          {!loading ? (
+            <button
+              type="submit"
+              className="btn btn-primary rounded-4 bg-black border-0 my-2 w-100 font fontweight-600"
+            >
+              Login
+            </button>
+          ) : (
+            <p className="text-center">Logging in...</p>
+          )}
         </form>
-        {/* <p className="text-secondary text-center mt-2 opacity-75 font fontweight-500">
-          Or Login with
-        </p> */}
-        {/* <button
-          type="button"
-          className="btn btn-outline w-100 my-2 rounded-4 font fontweight-400"
-        >
-          <FaGoogle
-            style={{
-              color: "black",
-              marginRight: "13px",
-              alignItems: "center",
-              fontSize: "1.2rem",
-              fontFamily: "Public Sans",
-              fontWeight: "400",
-            }}
-          />
-          Continue with Google
-        </button> */}
 
         <p className="float-end mt-2 mx-auto text-dark font fontweight-500">
           New to Taqreeb?{" "}
