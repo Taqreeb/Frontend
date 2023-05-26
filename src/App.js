@@ -96,12 +96,12 @@ function App() {
           <Route
             exact
             path="/signup"
-            element={!isLogin?<Signup showAlert={showAlert} />:<h1>Already logged in. Can't signup</h1>}
+            element={!isLogin?<Signup showAlert={showAlert} />:<h1 className="text-center" style={{marginTop:"40vh"}}>Already logged in.</h1>}
           />
           <Route
             exact
             path="/login"
-            element={!isLogin?<Login showAlert={showAlert} />:<h1>Already logged in. Can't signup</h1>}
+            element={!isLogin?<Login showAlert={showAlert} />:<h1 className="text-center" style={{marginTop:"40vh"}}>Already logged in.</h1>}
           />
 
           <Route
