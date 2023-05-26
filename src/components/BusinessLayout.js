@@ -9,7 +9,7 @@ const BusinessLayout = ({
 }) => {
   const decoratorUrl =
     "https://theceremonio.blob.core.windows.net/theceremonio-container/banners%2F608ec2df8706755965e469f9%2Flarge%2F1628351186601";
-
+  const currentDate = new Date().toISOString().split("T")[0];
   const locations = business.filter(
     (card, index) =>
       business.findIndex(
@@ -221,6 +221,7 @@ const BusinessLayout = ({
                   className="form-control my-2"
                   id="availability"
                   type="date"
+                  min={currentDate}
                   value={filters.bookedDates}
                   onChange={(e) =>
                     handleFilterChange("bookedDates", e.target.value)

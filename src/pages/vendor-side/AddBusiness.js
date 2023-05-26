@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../utils/apiUrl";
 
 const AddBusiness = (props) => {
-  const role = localStorage.getItem('role');
+  const role = localStorage.getItem("role");
+  const currentDate = new Date().toISOString().split("T")[0];
   const [loading, setLoading] = useState(false);
   const [albums, setAlbums] = useState([]);
   const [businessDisplayImage, setBusinessDisplayImage] = useState(null);
@@ -30,7 +31,8 @@ const AddBusiness = (props) => {
   const [goldPackagePrice, setGoldPackagePrice] = useState();
   const [goldPackageDescription, setGoldPackageDescription] = useState();
   const [platinumPackagePrice, setPlatinumPackagePrice] = useState();
-  const [platinumPackageDescription, setPlatinumPackageDescription] = useState();
+  const [platinumPackageDescription, setPlatinumPackageDescription] =
+    useState();
   const [albumImages, setAlbumImages] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -52,11 +54,15 @@ const AddBusiness = (props) => {
   const [venueCoverageAreaError, setVenueCoverageAreaError] = useState("");
   const [bookedDatesError, setBookedDatesError] = useState("");
   const [silverPackagePriceError, setSilverPackagePriceError] = useState("");
-  const [silverPackageDescriptionError, setSilverPackageDescriptionError] = useState("");
+  const [silverPackageDescriptionError, setSilverPackageDescriptionError] =
+    useState("");
   const [goldackagePriceError, setGoldPackagePriceError] = useState("");
-  const [goldPackageDescriptionError, setGoldPackageDescriptionError] = useState("");
-  const [platinumPackagePriceError, setPlatinumPackagePriceError] = useState("");
-  const [platinumPackageDescriptionError, setPlatinumPackageDescriptionError] = useState("");
+  const [goldPackageDescriptionError, setGoldPackageDescriptionError] =
+    useState("");
+  const [platinumPackagePriceError, setPlatinumPackagePriceError] =
+    useState("");
+  const [platinumPackageDescriptionError, setPlatinumPackageDescriptionError] =
+    useState("");
 
   const handleVendorTypeChange = (e) => {
     setVendorType(e.target.value);
@@ -72,44 +78,55 @@ const AddBusiness = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(silverPackagePrice){
-      if(!silverPackageDescription){
-      setSilverPackageDescriptionError("Silver Package description is required with its price")
-       return;
+    if (silverPackagePrice) {
+      if (!silverPackageDescription) {
+        setSilverPackageDescriptionError(
+          "Silver Package description is required with its price"
+        );
+        return;
       }
     }
-    if(goldPackagePrice){
-      if(!goldPackageDescription){
-      setGoldPackageDescriptionError("Gold Package description is required with its price")
-       return;
+    if (goldPackagePrice) {
+      if (!goldPackageDescription) {
+        setGoldPackageDescriptionError(
+          "Gold Package description is required with its price"
+        );
+        return;
       }
     }
-    if(platinumPackagePrice){
-      if(!platinumPackageDescription){
-      setPlatinumPackageDescriptionError("Platinum Package description is required with its price")
-       return;
+    if (platinumPackagePrice) {
+      if (!platinumPackageDescription) {
+        setPlatinumPackageDescriptionError(
+          "Platinum Package description is required with its price"
+        );
+        return;
       }
     }
-    if(silverPackageDescription){
-      if(!silverPackagePrice){
-      setSilverPackageDescriptionError("Silver Package price is required with its description")
-       return;
+    if (silverPackageDescription) {
+      if (!silverPackagePrice) {
+        setSilverPackageDescriptionError(
+          "Silver Package price is required with its description"
+        );
+        return;
       }
     }
-    if(goldPackageDescription){
-      if(!goldPackagePrice){
-      setGoldPackageDescriptionError("Gold Package price is required with its description")
-       return;
+    if (goldPackageDescription) {
+      if (!goldPackagePrice) {
+        setGoldPackageDescriptionError(
+          "Gold Package price is required with its description"
+        );
+        return;
       }
     }
-    if(platinumPackageDescription){
-      if(!platinumPackagePrice){
-      setPlatinumPackagePriceError("Platinum Package price is required with its description")
-       return;
+    if (platinumPackageDescription) {
+      if (!platinumPackagePrice) {
+        setPlatinumPackagePriceError(
+          "Platinum Package price is required with its description"
+        );
+        return;
       }
     }
 
-    
     if (albumImages.length > 0 || name || description) {
       return props.showAlert(
         "Please upload the album by filling all fields or empty the Album fields before submitting",
@@ -117,27 +134,31 @@ const AddBusiness = (props) => {
       );
     }
     setLoading(true);
-    setSilverPackageDescriptionError("")
-    setPlatinumPackageDescriptionError("")
-    setGoldPackageDescriptionError("")
-    setSilverPackagePriceError("")
-    setPlatinumPackagePriceError("")
-    setGoldPackagePriceError("")
+    setSilverPackageDescriptionError("");
+    setPlatinumPackageDescriptionError("");
+    setGoldPackageDescriptionError("");
+    setSilverPackagePriceError("");
+    setPlatinumPackagePriceError("");
+    setGoldPackagePriceError("");
     const dates = bookedDates.toString().split(",");
     const businessPackages = [
       {
         name: "Silver Package",
         description: silverPackageDescription,
-        price: silverPackagePrice,     
+        price: silverPackagePrice,
       },
-      { name: "Gold Package",description: goldPackageDescription, price: goldPackagePrice },
+      {
+        name: "Gold Package",
+        description: goldPackageDescription,
+        price: goldPackagePrice,
+      },
       {
         name: "Platinum Package",
         description: goldPackageDescription,
         price: platinumPackagePrice,
-      }
+      },
     ];
-   
+
     try {
       const response = await axios.post(
         `${API_URL}/${role}/addbusiness`,
@@ -167,7 +188,7 @@ const AddBusiness = (props) => {
           },
         }
       );
-      
+
       if (response.data.success) {
         setLoading(false);
         props.showAlert("Succesfully added a new business", "success");
@@ -460,6 +481,7 @@ const AddBusiness = (props) => {
               <MultiDatesPicker
                 multiple
                 value={bookedDates}
+                minDate={currentDate}
                 onChange={(date) => {
                   setBookedDates(date);
                   setBookedDatesError("");
@@ -588,7 +610,9 @@ const AddBusiness = (props) => {
                 min="0"
                 className="form-control"
                 onInvalid={() => {
-                  setSilverPackagePriceError("Package Price cannot be negative");
+                  setSilverPackagePriceError(
+                    "Package Price cannot be negative"
+                  );
                 }}
                 onChange={(e) => {
                   setSilverPackagePrice(e.target.value);
@@ -602,7 +626,7 @@ const AddBusiness = (props) => {
 
             <div className="mb-3">
               <label htmlFor="silverDescription" className="form-label">
-                Silver Package Description: 
+                Silver Package Description:
               </label>
               <textarea
                 type="text"
@@ -616,7 +640,9 @@ const AddBusiness = (props) => {
                 }}
               />
               {silverPackageDescriptionError && (
-                <span className="text-danger">{silverPackageDescriptionError}</span>
+                <span className="text-danger">
+                  {silverPackageDescriptionError}
+                </span>
               )}
             </div>
 
@@ -644,7 +670,7 @@ const AddBusiness = (props) => {
             </div>
             <div className="mb-3">
               <label htmlFor="goldDescription" className="form-label">
-                Gold Package Description: 
+                Gold Package Description:
               </label>
               <textarea
                 type="text"
@@ -658,7 +684,9 @@ const AddBusiness = (props) => {
                 }}
               />
               {goldPackageDescriptionError && (
-                <span className="text-danger">{goldPackageDescriptionError}</span>
+                <span className="text-danger">
+                  {goldPackageDescriptionError}
+                </span>
               )}
             </div>
 
@@ -673,7 +701,9 @@ const AddBusiness = (props) => {
                 min="0"
                 className="form-control"
                 onInvalid={() => {
-                  setPlatinumPackagePriceError("Package price cannot be negative");
+                  setPlatinumPackagePriceError(
+                    "Package price cannot be negative"
+                  );
                 }}
                 onChange={(e) => {
                   setPlatinumPackagePrice(e.target.value);
@@ -686,7 +716,7 @@ const AddBusiness = (props) => {
             </div>
             <div className="mb-3">
               <label htmlFor="platinumDescription" className="form-label">
-                Platinum Package Description: 
+                Platinum Package Description:
               </label>
               <textarea
                 type="text"
@@ -700,7 +730,9 @@ const AddBusiness = (props) => {
                 }}
               />
               {platinumPackageDescriptionError && (
-                <span className="text-danger">{platinumPackageDescriptionError}</span>
+                <span className="text-danger">
+                  {platinumPackageDescriptionError}
+                </span>
               )}
             </div>
           </div>

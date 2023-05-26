@@ -22,7 +22,7 @@ const Navbar = (props) => {
       <nav className="navbar navbar-expand-lg navbar-dark bg-black">
         <div className="container-fluid">
           <NavLink
-            className="navbar-brand text-light font fontweight-700"
+            className="navbar-brand text-light font fontweight-700 ms-2"
             to="/"
           >
             {props.title}

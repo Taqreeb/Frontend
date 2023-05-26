@@ -9,6 +9,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 
 const EditBusinessProfile = (props) => {
   const { businessId } = useParams();
+  const currentDate = new Date().toISOString().split("T")[0];
   const role = localStorage.getItem("role");
   const authtoken = localStorage.getItem("authtoken");
   const validPhoneNo = new RegExp("^(03|\\+923)[0-9]{2}[0-9]{7}$");
@@ -801,9 +802,9 @@ const EditBusinessProfile = (props) => {
                 </div>
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
-                  <div>
+                  <div style={{maxWidth:"28rem"}}>
                     <span>Business Description: </span>
-                    <span>{businessDescription}</span>
+                    <span >{businessDescription}</span>
                   </div>
                   <div>
                     <button
@@ -919,7 +920,7 @@ const EditBusinessProfile = (props) => {
                 </div>
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
-                  <div>
+                  <div style={{maxWidth:"28rem"}}>
                     <span>Business Email: </span>
                     <span>{businessEmail}</span>
                   </div>
@@ -1048,7 +1049,7 @@ const EditBusinessProfile = (props) => {
                 </div>
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
-                  <div>
+                  <div style={{maxWidth:"28rem"}}>
                     <span>Business Address: </span>
                     <span>{businessAddress}</span>
                   </div>
@@ -1113,7 +1114,7 @@ const EditBusinessProfile = (props) => {
                 </div>
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
-                  <div>
+                  <div style={{maxWidth:"28rem"}}>
                     <span>Business Estimated Price: </span>
                     <span>{businessEstimatedPrice} PKR</span>
                   </div>
@@ -1140,15 +1141,23 @@ const EditBusinessProfile = (props) => {
                   <MultiDatesPicker
                     multiple
                     value={businessBookedDates}
+                    minDate={currentDate}
                     onChange={(date) => {
-                      if (date.length > 0) {
+                      if (date) {
+                        if(date.length>0){
                         const dates = date.toString().split(",");
                         setBusinessBookedDates(dates);
                         setBusinessBookedDatesError("");
+                        }
+                        else{
+                          setBusinessBookedDates(date);
+                          setBusinessBookedDatesError("Booked Dates are required");
+                        }
                       } else {
                         setBusinessBookedDates(date);
-                        setBusinessBookedDatesError("");
+                        setBusinessBookedDatesError("Booked Dates are required");
                       }
+                    
                     }}
                     className="form-control"
                     placeholder="Select booked dates"
@@ -1246,7 +1255,7 @@ const EditBusinessProfile = (props) => {
                 </div>
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
-                  <div>
+                  <div style={{maxWidth:"30rem"}}>
                     <span>Business Facebook Url: </span>
                     <span>{businessFacebookUrl}</span>
                   </div>
@@ -1303,7 +1312,7 @@ const EditBusinessProfile = (props) => {
                 </div>
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
-                  <div>
+                  <div style={{maxWidth:"25rem"}}>
                     <span>Business Youtube Url: </span>
                     <span>{businessYoutubeUrl}</span>
                   </div>
@@ -1362,7 +1371,7 @@ const EditBusinessProfile = (props) => {
                 </div>
               ) : (
                 <div className="mt-5 d-flex justify-content-between">
-                  <div>
+                  <div style={{maxWidth:"28rem"}}>
                     <span>Business Instagram Url: </span>
                     <span>{businessInstagramUrl}</span>
                   </div>

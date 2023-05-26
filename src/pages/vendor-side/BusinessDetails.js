@@ -93,6 +93,10 @@ const BusinessDetails = () => {
   };
   let array = returnPaginationPage(totalPage, currentPage, recordsPerPage, 1);
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <>
       {!loadingGetReviews ? (
@@ -101,7 +105,7 @@ const BusinessDetails = () => {
             <div className="row pt-3">
               <div className="col ms-5">
                 <h1>{card.business_name}</h1>
-                <p className="ms-3">{card.business_type}</p>
+                <p className="ms-3">{capitalizeFirstLetter(card.business_type)}</p>
               </div>
               <div className="col">
                 <div className="d-flex">
