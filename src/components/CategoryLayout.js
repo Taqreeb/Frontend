@@ -13,6 +13,7 @@ const CategoryLayout = ({ business, description, vendorType }) => {
     "https://theceremonio.blob.core.windows.net/theceremonio-container/banners%2F608ec2df8706755965e469f9%2Flarge%2F1628351186601";
   const musicUrl =
     "https://theceremonio.blob.core.windows.net/theceremonio-container/categories%2Fmedium%2Fu_1632909619435";
+  const currentDate = new Date().toISOString().split("T")[0];
 
   const title = vendorType.charAt(0).toUpperCase() + vendorType.slice(1);
   const locations = business.filter(
@@ -56,14 +57,13 @@ const CategoryLayout = ({ business, description, vendorType }) => {
 
   useEffect(() => {
     clearFilters();
-    setSearchInput("")
-    setSuggestions([])
+    setSearchInput("");
+    setSuggestions([]);
   }, [vendorType]);
   const handleSearchInputChange = (event) => {
- 
     const userInput = event.target.value;
     setSearchInput(userInput);
-    
+
     const suggestions = business
       .filter(
         (item) =>
@@ -175,17 +175,15 @@ const CategoryLayout = ({ business, description, vendorType }) => {
                   value={searchInput}
                   onChange={handleSearchInputChange}
                 />
-                {suggestions.length > 0 && (
-                   showDropdown && (
-                    <>
+                {suggestions.length > 0 && showDropdown && (
+                  <>
                     <h6 className="mt-2">Suggestions</h6>
                     <select className="ms-1 mt-2 dropdown-filter">
                       {suggestions.map((suggestion, index) => (
                         <option key={index}>{suggestion}</option>
                       ))}
                     </select>
-                    </>
-                  )
+                  </>
                 )}
                 <div className="text-end me-2 mt-2">
                   <button
@@ -224,6 +222,7 @@ const CategoryLayout = ({ business, description, vendorType }) => {
                   className="form-control my-2"
                   id="availability"
                   type="date"
+                  min={currentDate}
                   value={filters.bookedDates}
                   onChange={(e) =>
                     handleFilterChange("bookedDates", e.target.value)

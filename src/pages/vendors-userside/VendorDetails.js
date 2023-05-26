@@ -28,6 +28,7 @@ const phoneIcon = <FaPhoneAlt />;
 const mapMarkerIcon = <FaMapMarkerAlt />;
 
 const VendorDetails = ({ showAlert }) => {
+  const currentDate = new Date().toISOString().split("T")[0];
   const navigate = useNavigate();
   const { businessId } = useParams();
   const [reviews, setReviews] = useState([]);
@@ -224,6 +225,11 @@ const VendorDetails = ({ showAlert }) => {
     getAllReviews();
     getBusinessReviewsRatings();
   }, [submitReview]);
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   return (
     <>
       {!loading && !loadingGetRatingReviews && !loadingGetReviews ? (
@@ -232,7 +238,7 @@ const VendorDetails = ({ showAlert }) => {
             <div className="row pt-3">
               <div className="col ms-5">
                 <h1>{card.business_name}</h1>
-                <p className="ms-3">{card.business_type}</p>
+                <p className="ms-3">{capitalizeFirstLetter(card.business_type)}</p>
               </div>
               <div className="col">
                 <div className="d-flex">
@@ -385,6 +391,7 @@ const VendorDetails = ({ showAlert }) => {
                     className="form-control my-2"
                     id="availability"
                     type="date"
+                    min={currentDate}
                     value={inputDate}
                     onChange={handleDateChange}
                   />
